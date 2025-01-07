@@ -77,7 +77,7 @@ This Music Website is a platform designed to provide users with an interactive a
 
 ## Usage
 
-1. Access the website via the URL provided after starting the server (default: http://localhost:5000).
+1. Access the website via the URL provided after starting the server (default: http://localhost:3000).
 2. Register as a new user or log in to your account.
 3. Explore music, create playlists, and enjoy the content.
 
