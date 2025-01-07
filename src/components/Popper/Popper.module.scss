@@ -1,0 +1,12 @@
+.wrapper {
+    width: 100%;
+    max-height: min((100vh - 9.6rem) - 6rem, 73.4rem); // Không vượt chiều cao tối da
+    min-height: 10rem;
+    padding-top: 0.8rem;
+    border-radius: 0.8rem;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgb(0 0 0 / 30%) 0 0.2rem 1.2rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}

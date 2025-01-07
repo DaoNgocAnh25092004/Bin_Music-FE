@@ -1,0 +1,151 @@
+.wrapper {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 10rem;
+    padding: 0.9rem 1.6rem;
+    border-radius: 10rem;
+    font-family: var(--font-family);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 2rem;
+    letter-spacing: 0.1px;
+    cursor: pointer;
+    border: 1px solid transparent;
+
+    user-select: none;
+    transition: all 0.3s ease-in-out;
+
+    + .wrapper {
+        margin-left: 0.8rem;
+    }
+
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+}
+
+.animation {
+    &:hover {
+        animation: rotate624 0.7s ease-in-out both;
+    }
+
+    &:hover .title {
+        animation: storm1261 0.7s ease-in-out both;
+        animation-delay: 0.06s;
+    }
+}
+
+@keyframes rotate624 {
+    0% {
+        transform: rotate(0deg) translate3d(0, 0, 0);
+    }
+
+    25% {
+        transform: rotate(3deg) translate3d(0, 0, 0);
+    }
+
+    50% {
+        transform: rotate(-3deg) translate3d(0, 0, 0);
+    }
+
+    75% {
+        transform: rotate(1deg) translate3d(0, 0, 0);
+    }
+
+    100% {
+        transform: rotate(0deg) translate3d(0, 0, 0);
+    }
+}
+
+@keyframes storm1261 {
+    0% {
+        transform: translate3d(0, 0, 0) translateZ(0);
+    }
+
+    25% {
+        transform: translate3d(4px, 0, 0) translateZ(0);
+    }
+
+    50% {
+        transform: translate3d(-3px, 0, 0) translateZ(0);
+    }
+
+    75% {
+        transform: translate3d(2px, 0, 0) translateZ(0);
+    }
+
+    100% {
+        transform: translate3d(0, 0, 0) translateZ(0);
+    }
+}
+
+.icon + .title,
+.title + .icon {
+    margin-left: 0.8rem;
+}
+
+// Button types
+.rounded {
+    border-radius: 999rem;
+    box-shadow: 0 0.2rem 0.8rem rgba(0 0 0 / 6%);
+    border-color: rgba(22, 24, 35, 0.12);
+
+    &:hover {
+        border-color: rgba(22, 24, 35, 0.2);
+        background-color: rgba(22, 24, 35, 0.03);
+    }
+}
+
+.primary {
+    color: var(--white-color);
+    background-color: var(--blue-light-color);
+
+    &:hover {
+        background-color: #4291ff;
+    }
+}
+
+.outline {
+    color: var(--white-color);
+    border-color: currentColor;
+    background-color: transparent;
+
+    &:hover {
+        border-color: currentColor;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+.text {
+    background-color: transparent;
+    color: var(--white-color);
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+//Button sizes
+.small {
+    min-width: 8.8rem;
+    padding: 0.5rem 1.6rem;
+}
+
+.large {
+    min-width: 15rem;
+    height: 4rem;
+}
+
+// Icon
+.icon {
+    display: inline-block;
+    width: 24px;
+    text-align: center;
+}
+
+.btn-login {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px 0;
+}
