@@ -1,147 +1,114 @@
-# Bin Store - Clothing E-commerce Website
+# Bin Music
 
-**Welcome to Bin Store!**  
-Bin Store is an e-commerce platform that specializes in selling a wide range of clothing and fashion accessories for men, women, and children. Our aim is to provide a seamless online shopping experience with the latest trends in fashion, offering both casual and formal wear to cater to every style preference.
+## Overview
+This Music Website is a platform designed to provide users with an interactive and enjoyable experience for exploring, discovering, and listening to music. It features a modern design, responsive layout, and various functionalities to enhance user engagement.
+
+---
 
 ## Features
 
-### 1. User-Friendly Interface
+### User Features:
+1. **Browse Music:** Explore a vast collection of music categorized by genre, artist, album, or mood.
+2. **Search Functionality:** Quickly find your favorite songs, artists, or albums using a powerful search engine.
+3. **Playlist Creation:** Create and manage personalized playlists.
+4. **Music Player:** A seamless music player with features like play, pause, next, previous, and shuffle.
+5. **User Authentication:** Secure login and registration with options for Google or Facebook integration.
 
-- A clean, responsive design that works across all devices, including desktops, tablets, and mobile phones.
-- Intuitive navigation with easy access to product categories, search functionality, and filters for size, color, and price.
+### Admin Features:
+1. **Content Management:** Add, update, or remove music, artists, and albums.
+2. **User Management:** Manage registered users and their permissions.
+3. **Analytics Dashboard:** View insights about user engagement and popular tracks.
 
-### 2. Product Management
+---
 
-- **Product Categories:** Offers a wide range of categories such as Men's Wear, Women's Wear, Kids' Wear, Accessories, and Seasonal Specials.
-- **Product Pages:** Detailed product descriptions, multiple high-quality images, available sizes, and color options. Each product page includes customer reviews and a related products section.
-- **Stock Management:** Real-time inventory tracking for products to ensure customers see accurate stock levels.
+## Technologies Used
 
-### 3. Shopping Cart & Checkout
+### Frontend:
+- **HTML5 & CSS3:** For structuring and styling the website.
+- **JavaScript (React.js):** For building the user interface.
+- **Redux:** For state management.
+- **Axios:** For API calls.
 
-- A dynamic shopping cart that updates in real time as users add or remove products.
-- **Multiple Payment Options:** Secure payment gateways including credit/debit cards, PayPal, and online banking.
-- **Discounts and Promotions:** Users can apply discount codes during checkout and see the price reductions immediately.
-- **Order Tracking:** Customers can track their orders from dispatch to delivery via a tracking number provided post-purchase.
+### Backend:
+- **Node.js (Express):** For server-side logic and APIs.
+- **MongoDB:** For storing user data and music library.
+- **JWT (JSON Web Tokens):** For authentication.
 
-### 4. User Accounts
+### Additional Tools:
+- **HeidiSQL & MariaDB:** For relational database features (if applicable).
+- **Cloudinary:** For storing and managing media files.
 
-- **User Registration/Login:** Customers can register for an account, log in, and save their shipping and billing information for faster checkout.
-- **Order History:** A personal dashboard for customers to view past purchases, reorder products, and manage shipping addresses.
-- **Wishlist Feature:** Users can save items to a wishlist for future purchases.
-
-### 5. Admin Panel
-
-- **Product Management:** Admins can easily add, edit, or remove products, including pricing, stock levels, and product descriptions.
-- **Order Management:** A comprehensive dashboard that allows admin to manage orders, process refunds, and handle customer queries.
-- **Customer Management:** Admins can manage customer accounts, view purchase histories, and resolve issues efficiently.
-
-### 6. Security Features
-
-- **Data Encryption:** Secure HTTPS protocols and SSL certificates for safe browsing and transactions.
-- **User Authentication:** Two-factor authentication for admin accounts and encrypted passwords for user accounts.
-- **Payment Security:** Integration with trusted payment providers to ensure the safety of credit card transactions and sensitive data.
-
-### 7. SEO & Marketing Tools
-
-- **SEO Optimized:** Meta tags, product descriptions, and images are optimized for search engines to drive organic traffic.
-- **Email Marketing Integration:** Allows the collection of user emails for newsletters, promotions, and order confirmations.
-- **Social Media Integration:** Customers can share products directly on social media platforms like Instagram, Facebook, and Twitter.
+---
 
 ## Installation
 
-### Prerequisites
+### Prerequisites:
+1. Node.js and npm installed.
+2. MongoDB or MariaDB set up and running.
 
-To set up this project, you will need the following software installed on your system:
-
-- Node.js (v14 or above)
-- NPM (v6 or above)
-- MongoDB (for database management)
-- Git (for version control)
-
-### Steps to Install
-
+### Steps:
 1. Clone the repository:
    ```bash
-   git clone https://github.com/DaoNgocAnh25092004/Bin-Store.git
+   [git clone https://github.com/your-username/music-website.git](https://github.com/DaoNgocAnh25092004/Bin_Music-FE.git)
    ```
 2. Navigate to the project directory:
    ```bash
-   cd bin-store
+   cd music-website
    ```
 3. Install dependencies:
    ```bash
    npm install
    ```
-4. Set up environment variables. Create a .env file and include the following:
-
+4. Set up environment variables:
+   - Create a `.env` file in the root directory.
+   - Add the following variables:
+     ```env
+     PORT=3000
+     MONGO_URI=your_mongo_connection_string
+     JWT_SECRET=your_secret_key
+     CLOUDINARY_URL=your_cloudinary_url
+     ```
+5. Run the application:
    ```bash
-   MONGO_URI=your-mongodb-uri
-   PORT=3001
-   JWT_SECRET=your-jwt-secret
-   STRIPE_SECRET=your-stripe-secret
+   npm start
    ```
 
-5. Run the application in development mode:
+---
 
-   ```bash
-   npm run dev
-   ```
+## Usage
 
-6. Open your browser and navigate to http://localhost:3001 to see the application.
+1. Access the website via the URL provided after starting the server (default: http://localhost:5000).
+2. Register as a new user or log in to your account.
+3. Explore music, create playlists, and enjoy the content.
 
-## Technology Stack
-
-### Frontend:
-
-- React.js (for a responsive and dynamic user interface)
-- Redux (for state management)
-- Bootstrap (for styling)
-
-### Backend:
-
-- Node.js & Express.js (for server-side development)
-- MongoDB (for database management)
-- Mongoose (for object data modeling)
-
-### Payment Integration:
-
-- Stripe API (for handling payments)
+---
 
 ## Contributing
 
-We welcome contributions from the community! Please follow these steps to contribute:
-
 1. Fork the repository.
-
 2. Create a new branch:
-
    ```bash
-   git checkout -b feature/your-feature-name
+   git checkout -b feature-name
    ```
-
-3. Commit your changes:
-
+3. Make your changes and commit:
    ```bash
-   git commit -m 'Add some feature'
+   git commit -m "Description of changes"
    ```
-
-4. Push to the branch:
-
+4. Push to your branch:
    ```bash
-   git push origin feature/your-feature-name
+   git push origin feature-name
    ```
+5. Submit a pull request.
 
-5. Open a pull request.
+---
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+---
 
 ## Contact
 
-For any queries or issues, please reach out to our support team:
+For questions or suggestions, please contact us at daongocanh25092004#gmail.com.
 
-- Email: daongocanh25092004@gmail.com
-- Phone: [+84353707544](tel:+84353707544)
-
-Happy Shopping with **Bin Store!** ✨
