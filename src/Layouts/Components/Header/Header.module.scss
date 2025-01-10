@@ -153,16 +153,30 @@
     }
 }
 
-.btn-google {
-    border-color: var(--gray-light-color);
-    color: var(--black-color);
-    width: 100%;
+// .btn-google {
+//     border-color: var(--gray-light-color);
+//     color: var(--black-color);
+//     width: 100%;
+//     padding: 10px 0;
 
-    &:hover {
-        background-color: rgba(211, 209, 209, 0.708);
-    }
+//     position: relative;
 
-    svg {
-        margin: 0 0 -5px -130px;
-    }
+//     > span:last-child {
+//         margin-left: 0;
+//     }
+
+//     &:hover {
+//         background-color: rgba(211, 209, 209, 0.708);
+//     }
+
+//     svg {
+//         position: absolute;
+//         left: 10px;
+//         top: 50%;
+//         transform: translateY(-50%);
+//     }
+// }
+
+.btn-login-google {
+    width: 360px !important;
 }

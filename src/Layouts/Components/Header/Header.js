@@ -1,5 +1,5 @@
 import className from 'classnames/bind';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react/headless';
@@ -12,16 +12,41 @@ import Image from '~/components/Image';
 import images from '~/assets/images';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import Modal from '~/components/Modal';
-import { Google } from '~/components/Icons';
+import { GoogleLogin } from '@react-oauth/google';
+import * as GoogleService from '~/Services/GoogleService';
+import { ToastContext } from '~/components/ToastMessage';
 
 const cx = className.bind(styles);
 
 function Header() {
     const [isModalOpen, setModalOpen] = useState(false);
     const [isTippyVisible, setTippyVisible] = useState(false);
-    const currentUser = true;
+    const { toast } = useContext(ToastContext);
+    const [isLogin, setLogin] = useState(false);
 
-    // Render user
+    // Handle login success
+    const handleLoginSuccess = async (response) => {
+        try {
+            // Call API login google
+            const result = await GoogleService.LoginGoogle(response);
+            console.log('🚀 ~ handleLoginSuccess ~ result:', result);
+
+            // Close model login
+            setModalOpen(false);
+
+            // Set login success
+            setLogin(true);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    // Handle login fail
+    const handleLoginFailure = (error) => {
+        toast.error('Đăng nhập thất bại');
+    };
+
+    // Render box login
     const renderResult = (attrs) => (
         <div className={cx('container_user')} tabIndex="-1" {...attrs}>
             <PopperWrapper>
@@ -73,14 +98,23 @@ function Header() {
 
                 <h3>Đăng nhâp Bin Music</h3>
 
-                <Button className={cx('btn-google')} outline leftIcon={<Google />}>
-                    Đăng nhập với Google
-                </Button>
+                <GoogleLogin
+                    onSuccess={handleLoginSuccess}
+                    onError={handleLoginFailure}
+                    shape="circle"
+                    width={360}
+                    theme="outline"
+                    size="large"
+                    buttonText="Đăng nhập bằng Google"
+                    scope="profile email openid https://www.googleapis.com/auth/userinfo.profile"
+                    access_type="offline"
+                />
 
                 <p>Bằng cách đăng nhập tài khoản, bạn đã đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của Bin Music</p>
             </Modal>
 
             <Search />
+
             <div className={cx('tools')}>
                 <Button large primary>
                     Nâng cấp tài khoản
@@ -97,15 +131,14 @@ function Header() {
                     delay={[0, 700]}
                     placement="bottom-end"
                     render={renderResult}
-                    hideOnClick={false}
                 >
-                    {currentUser ? (
+                    {isLogin ? (
                         <div className={cx('user')} onClick={() => setTippyVisible(!isTippyVisible)}>
                             <Image src={images.noUser} alt="avatar" />
                         </div>
                     ) : (
                         <div className={cx('user')} onClick={() => setTippyVisible(!isTippyVisible)}>
-                            <Image src={images.noUser} alt="avatar" />
+                            <Image src={images.music} alt="avatar" />
                         </div>
                     )}
                 </Tippy>
