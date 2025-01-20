@@ -1,7 +1,8 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
-
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import styles from './Sidebar.module.scss';
 import Menu, { MenuItem } from './Menu';
 import config from '~/config';
@@ -9,15 +10,28 @@ import { LiveRadio, BinChart, Library, Explore, BxhMusic, TopicAndCategory, Rati
 import Button from '~/components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import Modal from '~/components/Modal';
-import { Google } from '~/components/Icons';
-import Image from '~/components/Image';
-import images from '~/assets/images';
+import Login from '~/components/Login';
 
 const cx = classNames.bind(styles);
 
 function Sidebar() {
     const [isModalOpen, setModalOpen] = useState(false);
+    const [isLogin, setIsLogin] = useState(false);
+    const user = useSelector((state) => state.user);
+
+    // Check if user is login
+    useEffect(() => {
+        if (user.isLogin) {
+            setIsLogin(true);
+        } else {
+            setIsLogin(false);
+        }
+    }, [user]);
+
+    const handleLoginSuccess = () => {
+        setIsLogin(true);
+    };
+
     return (
         <>
             <div className={cx('sidebar')}>
@@ -29,7 +43,7 @@ function Sidebar() {
                 {/* Menu */}
                 <Menu>
                     <MenuItem title="Khám phá" to={config.routes.explore} icon={<Explore />} />
-                    <MenuItem title="Thư viện" to={config.routes.library} icon={<Library />} />
+                    {isLogin && <MenuItem title="Thư viện" to={config.routes.library} icon={<Library />} />}
                     <MenuItem title="#binchart" to={config.routes.binChart} icon={<BinChart />} />
                     <MenuItem title="Radio" to={config.routes.radio} icon={<LiveRadio />} />
 
@@ -41,38 +55,30 @@ function Sidebar() {
                 </Menu>
 
                 {/* login suggestion */}
-                <div className={cx('login-suggestion')}>
-                    <p>Đăng nhập để khám phá playlist dành riêng cho bạn</p>
-                    <Button
-                        onClick={() => {
-                            setModalOpen(true);
-                        }}
-                        small
-                        outline
-                    >
-                        Đăng nhập
-                    </Button>
-                </div>
+                {!isLogin && (
+                    <div className={cx('login-suggestion')}>
+                        <p>Đăng nhập để khám phá playlist dành riêng cho bạn</p>
+                        <Button
+                            onClick={() => {
+                                setModalOpen(true);
+                            }}
+                            small
+                            outline
+                        >
+                            Đăng nhập
+                        </Button>
+                    </div>
+                )}
 
                 {/* Create Playlist */}
-                <div className={cx('create-playlist')}>
-                    <FontAwesomeIcon icon={faPlus} />
-                    <p>Tạo Playlist mới</p>
-                </div>
+                {isLogin && (
+                    <div className={cx('create-playlist')}>
+                        <FontAwesomeIcon icon={faPlus} />
+                        <p>Tạo Playlist mới</p>
+                    </div>
+                )}
             </div>
-            <Modal className={cx('box-login')} isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-                <div className={cx('background-login')}>
-                    <Image src={images.backGroundLogin} alt="Background login" />
-                </div>
-
-                <h3>Đăng nhâp Bin Music</h3>
-
-                <Button className={cx('btn-google')} outline leftIcon={<Google />}>
-                    Đăng nhập với Google
-                </Button>
-
-                <p>Bằng cách đăng nhập tài khoản, bạn đã đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của Bin Music</p>
-            </Modal>
+            <Login isOpen={isModalOpen} setIsOpen={setModalOpen} onLoginSuccess={handleLoginSuccess} />
         </>
     );
 }

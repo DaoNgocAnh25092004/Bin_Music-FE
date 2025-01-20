@@ -9,8 +9,7 @@ const cx = classNames.bind(styles);
 function MenuItem({ title, to, icon, iconActive, iconImg, iconImgActive }) {
     const renderIcon = (isActive = false) => {
         if (iconImg) {
-            const imgToRender =
-                isActive && iconImgActive ? iconImgActive : iconImg;
+            const imgToRender = isActive && iconImgActive ? iconImgActive : iconImg;
 
             return (
                 <div className={cx('icon-img')}>
@@ -24,10 +23,7 @@ function MenuItem({ title, to, icon, iconActive, iconImg, iconImgActive }) {
     };
 
     return (
-        <NavLink
-            to={to}
-            className={(nav) => cx('menu-item', { active: nav.isActive })}
-        >
+        <NavLink to={to} className={(nav) => cx('menu-item', { active: nav.isActive })}>
             {(nav) => (
                 <>
                     {renderIcon(nav.isActive)}

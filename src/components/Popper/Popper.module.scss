@@ -1,12 +1,23 @@
 .wrapper {
     width: 100%;
-    max-height: min((100vh - 9.6rem) - 6rem, 73.4rem); // Không vượt chiều cao tối da
+    max-height: min((100vh - 14rem) - 6rem, 73.4rem); // Không vượt chiều cao tối da
     min-height: 10rem;
     padding-top: 0.8rem;
     border-radius: 0.8rem;
-    background-color: rgb(255, 255, 255);
-    box-shadow: rgb(0 0 0 / 30%) 0 0.2rem 1.2rem;
-    overflow: hidden;
+    background-color: var(--popper-background-color);
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
+}
+.wrapper::-webkit-scrollbar {
+    width: 5px;
+}
+.wrapper::-webkit-scrollbar-thumb {
+    background: var(--gray-light-color);
+    width: 3px;
+}
+
+.wrapper::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
+    background: var(--blue-light-color);
 }
