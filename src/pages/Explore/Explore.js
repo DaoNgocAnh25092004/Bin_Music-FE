@@ -23,7 +23,7 @@ function Explore() {
     return (
         <div>
             <div className={cx('title')}>
-                <div className={cx('title-name')}>Best Of 2024</div>
+                <div className={cx('title-name')}>Best Of 2025</div>
 
                 <div className={cx('title-view-all')}>
                     <span>Tất Cả</span>

@@ -31,6 +31,11 @@ authorizedAxiosInstance.interceptors.request.use(
     },
 );
 
+// Create a promise to call api refresh token
+// Purpose to receive request api refresh token first then hold call api refresh token until complete then retry
+// before call api error instead of calling api refresh token continuous
+let refreshTokenPromise = null;
+
 authorizedAxiosInstance.interceptors.response.use(
     (response) => {
         // Do something with response data
@@ -52,49 +57,52 @@ authorizedAxiosInstance.interceptors.response.use(
             store.dispatch(logout());
 
             // Navigation to home page
-            // window.location.href = '/';
+            window.location.href = '/';
         }
 
         // If receive status code is 410 GONE from BE then call API refresh token
         // Firstly, need get request API error from error.config
         const originalRequest = error.config;
-        console.log('🚀 ~ originalRequest:', originalRequest);
 
-        if (error.response?.status === 410 && !originalRequest._retry) {
-            // Add a value _retry =  true in the meantime to refresh token only call only once at a time
-            originalRequest._retry = true;
+        if (error.response?.status === 410 && originalRequest) {
+            if (!refreshTokenPromise) {
+                // TH1: Get refreshToken from local storage
+                // const refreshToken = localStorage.getItem('refreshToken');
 
-            // TH1: Get refreshToken from local storage
-            // const refreshToken = localStorage.getItem('refreshToken');
+                // TH2: Get refreshToken from cookies
+                // No need get refreshToken
 
-            // TH2: Get refreshToken from cookies
-            // No need get refreshToken
+                // Call API refresh token
+                refreshTokenPromise = GoogleService.RefreshToken() // Th1: Local storage then pass refreshToken as a parameter
+                    .then(() => {
+                        // Th1: Local storage
+                        // Take and reassign accessToken
+                        // const { accessToken } = res.data;
+                        // localStorage.setItem('accessToken', accessToken);
+                        // authorizedAxiosInstance.defaults.headers.Authorization = `Bearer ${accessToken}`;
+                        // Th2: Cookies
+                        // Access token is saved in cookies, no need to do anything
+                    })
+                    .catch((_err) => {
+                        // // If any error form api refresh token then call logout
+                        GoogleService.LogoutGoogle();
+                        localStorage.removeItem('user');
+                        store.dispatch(logout());
+                        window.location.href = '/';
+                        // Return error
+                        return Promise.reject(_err);
+                    })
+                    .finally(() => {
+                        //Thought api refresh token success or error set refreshTokenPromise = null
+                        refreshTokenPromise = null;
+                    });
+            }
 
-            // Call API refresh token
-            return GoogleService.RefreshToken() // Th1: Local storage then pass refreshToken as a parameter
-                .then(() => {
-                    // Th1: Local storage
-                    // Take and reassign accessToken
-                    // const { accessToken } = res.data;
-                    // localStorage.setItem('accessToken', accessToken);
-                    // authorizedAxiosInstance.defaults.headers.Authorization = `Bearer ${accessToken}`;
-
-                    // Th2: Cookies
-                    // Access token is saved in cookies, no need to do anything
-
-                    // Return axios instance our combined with the originalRequest to call initial api error
-                    return authorizedAxiosInstance(originalRequest);
-                })
-                .catch((_err) => {
-                    // console.log('🚀 ~ _err:', _err);
-                    // // If any error form api refresh token then call logout
-                    // GoogleService.LogoutGoogle();
-                    // localStorage.removeItem('user');
-                    // store.dispatch(logout());
-                    // // window.location.href = '/';
-                    // // Return error
-                    // return Promise.reject(_err);
-                });
+            // Finally, return refreshTokenPromise when success
+            return refreshTokenPromise.then(() => {
+                // Return axios instance our combined with the originalRequest to call initial api error
+                return authorizedAxiosInstance(originalRequest);
+            });
         }
 
         // Centralized error handling displays error messages returned from api (Write code once)
