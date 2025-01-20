@@ -1,9 +1,10 @@
 import className from 'classnames/bind';
-import { useState, useContext } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGear } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUpFromBracket, faBan, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
+import { useNavigate } from 'react-router';
 
 import Search from '../Search';
 import styles from './Header.module.scss';
@@ -11,107 +12,144 @@ import Button from '~/components/Button';
 import Image from '~/components/Image';
 import images from '~/assets/images';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
-import Modal from '~/components/Modal';
-import { GoogleLogin } from '@react-oauth/google';
+import Login from '~/components/Login';
 import * as GoogleService from '~/Services/GoogleService';
-import { ToastContext } from '~/components/ToastMessage';
+import { updateUser, logout } from '~/redux/slides/userSlide';
+import { useSelector } from 'react-redux';
+import { store } from '~/redux/store';
 
 const cx = className.bind(styles);
 
 function Header() {
     const [isModalOpen, setModalOpen] = useState(false);
     const [isTippyVisible, setTippyVisible] = useState(false);
-    const { toast } = useContext(ToastContext);
     const [isLogin, setLogin] = useState(false);
+    const userInfo = useSelector((state) => state.user);
+    const navigate = useNavigate();
 
-    // Handle login success
-    const handleLoginSuccess = async (response) => {
-        try {
-            // Call API login google
-            const result = await GoogleService.LoginGoogle(response);
-            console.log('🚀 ~ handleLoginSuccess ~ result:', result);
+    // Load user info from localStorage on initial render
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        const isLogin = userInfo.isLogin;
 
-            // Close model login
-            setModalOpen(false);
-
-            // Set login success
+        if (storedUser || isLogin) {
+            const user = JSON.parse(storedUser);
+            store.dispatch(updateUser(user));
             setLogin(true);
-        } catch (error) {
-            console.log(error);
         }
-    };
+    }, [userInfo]);
 
-    // Handle login fail
-    const handleLoginFailure = (error) => {
-        toast.error('Đăng nhập thất bại');
-    };
+    // Handle logout
+    const handleLogout = useCallback(async () => {
+        try {
+            // Logout google
+            await GoogleService.LogoutGoogle();
+
+            // Remove user info in local storage
+            localStorage.removeItem('user');
+
+            // Logout user info in redux
+            store.dispatch(logout());
+
+            // Close tippy
+            setTippyVisible(false);
+
+            // Set login status
+            setLogin(false);
+
+            // Navigate to home page
+            navigate('/');
+        } catch (error) {
+            console.log('Logout error: ', error);
+        }
+    }, [navigate]);
+
+    // Login success handler
+    const handleLoginSuccess = useCallback(() => {
+        setLogin(true);
+    }, []);
 
     // Render box login
     const renderResult = (attrs) => (
         <div className={cx('container_user')} tabIndex="-1" {...attrs}>
             <PopperWrapper>
-                <Button
-                    onClick={() => {
-                        setModalOpen(true);
-                        setTippyVisible(false);
-                    }}
-                    className={cx('btn-login')}
-                    primary
-                >
-                    Đăng nhập
-                </Button>
+                {/* Show button login */}
+                {!isLogin && (
+                    <Button
+                        onClick={() => {
+                            setModalOpen(true);
+                            setTippyVisible(false);
+                        }}
+                        className={cx('btn-login')}
+                        primary
+                    >
+                        Đăng nhập
+                    </Button>
+                )}
+
+                {/* Show info when login success */}
+
+                {isLogin && (
+                    <>
+                        <div className={cx('box-user-info')}>
+                            <div>
+                                <Image src={userInfo.avatar || images.noUser} alt={userInfo.name || 'User Avatar'} />
+                            </div>
+                            <div>
+                                <h4>{userInfo.name}</h4>
+                                <p>BASIC</p>
+                            </div>
+                        </div>
+
+                        <Button className={cx('btn-upgrade')} primary>
+                            Nâng cấp tài khoản
+                        </Button>
+                    </>
+                )}
 
                 <p>Đăng ký gói</p>
-                <div className={cx('box-package', 'box-plus')}>
-                    <div>
-                        <p>Bin Music</p>
-                        <span>PLUS</span>
+                {['PLUS', 'PREMIUM'].map((type, index) => (
+                    <div key={index} className={cx('box-package', `box-${type.toLowerCase()}`)}>
+                        <div>
+                            <p>Bin Music</p>
+                            <span>{type}</span>
+                        </div>
+                        <h5>{type === 'PLUS' ? 'Chỉ từ 13.000đ/tháng' : 'Chỉ từ 41.000đ/tháng'}</h5>
+                        <p>
+                            {type === 'PLUS'
+                                ? 'Nghe nhạc với chất lượng cao nhất, không quảng cáo'
+                                : 'Toàn bộ đặc quyền Plus cùng kho nhạc Premium'}
+                        </p>
+                        <Button className={cx('btn-learn-more', type === 'PREMIUM' && 'btn-premium')} small primary>
+                            Tìm hiểu thêm
+                        </Button>
                     </div>
-                    <h5>Chỉ từ 13.000đ/tháng</h5>
-                    <p>Nghe nhạc với chất lượng cao nhất, không quảng cáo</p>
-                    <Button className={cx('btn-learn-more')} small primary>
-                        Tìm hiểu thêm
-                    </Button>
-                </div>
+                ))}
 
-                <div className={cx('box-package', 'box-premium')}>
-                    <div>
-                        <p>Bin Music</p>
-                        <span>PREMIUM</span>
-                    </div>
-                    <h5>Chỉ từ 41.000đ/tháng</h5>
-                    <p>Toàn bộ đặc quyền Plus cùng kho nhạc Premium</p>
-                    <Button className={cx('btn-learn-more', 'btn-premium')} small primary>
-                        Tìm hiểu thêm
-                    </Button>
-                </div>
+                {isLogin && (
+                    <>
+                        <div className={cx('line')}></div>
+                        <div className={cx('box-individual')}>
+                            <p>Cá nhân</p>
+                            <Button leftIcon={<FontAwesomeIcon icon={faBan} />}>Danh sách chặn</Button>
+                            <Button leftIcon={<FontAwesomeIcon icon={faArrowUpFromBracket} />}>Tải lên</Button>
+                        </div>
+
+                        <div className={cx('line')}></div>
+                        <div className={cx('box-logout')}>
+                            <Button onClick={handleLogout} leftIcon={<FontAwesomeIcon icon={faRightFromBracket} />}>
+                                Đăng xuất
+                            </Button>
+                        </div>
+                    </>
+                )}
             </PopperWrapper>
         </div>
     );
 
     return (
         <header className={cx('header')}>
-            <Modal className={cx('box-login')} isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-                <div className={cx('background-login')}>
-                    <Image src={images.backGroundLogin} alt="Background login" />
-                </div>
-
-                <h3>Đăng nhâp Bin Music</h3>
-
-                <GoogleLogin
-                    onSuccess={handleLoginSuccess}
-                    onError={handleLoginFailure}
-                    shape="circle"
-                    width={360}
-                    theme="outline"
-                    size="large"
-                    buttonText="Đăng nhập bằng Google"
-                    scope="profile email openid https://www.googleapis.com/auth/userinfo.profile"
-                    access_type="offline"
-                />
-
-                <p>Bằng cách đăng nhập tài khoản, bạn đã đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của Bin Music</p>
-            </Modal>
+            <Login isOpen={isModalOpen} setIsOpen={setModalOpen} onLoginSuccess={handleLoginSuccess} />
 
             <Search />
 
@@ -132,15 +170,9 @@ function Header() {
                     placement="bottom-end"
                     render={renderResult}
                 >
-                    {isLogin ? (
-                        <div className={cx('user')} onClick={() => setTippyVisible(!isTippyVisible)}>
-                            <Image src={images.noUser} alt="avatar" />
-                        </div>
-                    ) : (
-                        <div className={cx('user')} onClick={() => setTippyVisible(!isTippyVisible)}>
-                            <Image src={images.music} alt="avatar" />
-                        </div>
-                    )}
+                    <div className={cx('user')} onClick={() => setTippyVisible(!isTippyVisible)}>
+                        <Image src={userInfo.avatar || images.noUser} alt={userInfo.name || 'User Avatar'} />
+                    </div>
                 </Tippy>
             </div>
         </header>

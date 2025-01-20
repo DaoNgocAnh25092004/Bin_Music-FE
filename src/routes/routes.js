@@ -21,11 +21,6 @@ const publicRoutes = [
     },
 
     {
-        path: config.routes.library,
-        component: Library,
-    },
-
-    {
         path: config.routes.binChart,
         component: BinChart,
     },
@@ -46,6 +41,15 @@ const publicRoutes = [
 ];
 
 // Routes private
-const privateRoutes = [];
+const protectedRoutes = {
+    user: [],
+    admin: [],
+    both: [
+        {
+            path: config.routes.library,
+            component: Library,
+        },
+    ],
+};
 
-export { publicRoutes, privateRoutes };
+export { publicRoutes, protectedRoutes };
