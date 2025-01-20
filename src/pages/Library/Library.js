@@ -10,6 +10,15 @@ function Library() {
     useEffect(() => {
         getInfo();
     }, []);
+    useEffect(() => {
+        getInfo();
+    }, []);
+    useEffect(() => {
+        getInfo();
+    }, []);
+    useEffect(() => {
+        getInfo();
+    }, []);
 
     return <div>Thư viên</div>;
 }

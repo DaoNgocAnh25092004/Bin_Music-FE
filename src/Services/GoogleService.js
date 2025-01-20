@@ -19,5 +19,5 @@ export const RefreshToken = async () => {
 };
 
 export const GetUserInfo = async () => {
-    return await authorizedAxiosInstance.get(`${process.env.REACT_APP_API_URL}/user/info-user2222`);
+    return await authorizedAxiosInstance.get(`${process.env.REACT_APP_API_URL}/user/info-user`);
 };
