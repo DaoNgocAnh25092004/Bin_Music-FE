@@ -3,6 +3,7 @@ const images = {
     noUser: require('~/assets/images/no-user.png'),
     music: require('~/assets/images/music.png'),
     backGroundLogin: require('~/assets/images/background-login.png'),
+    page404: require('~/assets/images/404.png'),
     partner1: require('~/assets/images/ListPartner/partner1.png'),
     partner2: require('~/assets/images/ListPartner/partner2.png'),
     partner3: require('~/assets/images/ListPartner/partner3.png'),

@@ -14,7 +14,7 @@ import images from '~/assets/images';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import Login from '~/components/Login';
 import * as GoogleService from '~/Services/GoogleService';
-import { updateUser, logout } from '~/redux/slides/userSlide';
+import { updateUser, logout } from '~/redux/slices/userSlice';
 import { useSelector } from 'react-redux';
 import { store } from '~/redux/store';
 
