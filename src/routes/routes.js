@@ -3,6 +3,7 @@ import config from '~/config';
 
 // Layouts
 // import { HeaderOnly } from '~/Layouts';
+import EmptyLayout from '~/Layouts/EmptyLayout';
 
 // Pages
 import Explore from '~/pages/Explore';
@@ -12,6 +13,7 @@ import Radio from '~/pages/Radio';
 import RatingNewMusic from '~/pages/RatingNewMusic';
 import TopicAndCategory from '~/pages/TopicAndCategory';
 import Top100 from '~/pages/Top100';
+import Page404 from '~/pages/Page404';
 
 // Routes public
 const publicRoutes = [
@@ -38,6 +40,12 @@ const publicRoutes = [
     },
 
     { path: config.routes.top100, component: Top100 },
+
+    {
+        path: config.routes.page404,
+        component: Page404,
+        layout: EmptyLayout,
+    },
 ];
 
 // Routes private

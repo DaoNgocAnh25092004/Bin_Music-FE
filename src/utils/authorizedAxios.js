@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as GoogleService from '~/Services/GoogleService';
 import { store } from '~/redux/store';
-import { logout } from '~/redux/slides/userSlide';
+import { logout } from '~/redux/slices/userSlice';
 import { toast } from 'react-toastify';
 
 // Create Axios (authorizedAxiosInstance) purpose for use custom and configuration for project
@@ -84,7 +84,7 @@ authorizedAxiosInstance.interceptors.response.use(
                         // Access token is saved in cookies, no need to do anything
                     })
                     .catch((_err) => {
-                        // // If any error form api refresh token then call logout
+                        // If any error form api refresh token then call logout
                         GoogleService.LogoutGoogle();
                         localStorage.removeItem('user');
                         store.dispatch(logout());

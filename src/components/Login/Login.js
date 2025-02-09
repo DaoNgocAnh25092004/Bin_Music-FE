@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import classNames from 'classnames/bind';
 
-import { updateUser } from '~/redux/slides/userSlide';
+import { updateUser } from '~/redux/slices/userSlice';
 import Modal from '~/components/Modal';
 import Image from '~/components/Image';
 import images from '~/assets/images';
