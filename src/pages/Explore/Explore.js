@@ -1,24 +1,61 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { toast } from 'react-toastify';
 
 import Styles from './Explore.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight, faRefresh } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import ListTopic, { Topic } from './ListTopic';
-import ListMusic, { Music } from './ListMusic';
-import Button from '~/components/Button';
-import Chart from './Chart';
+// import ListMusic, { Music } from '../../components/ListMusic';
+// import Button from '~/components/Button';
+// import Chart from './Chart';
 import Image from '~/components/Image';
 import images from '~/assets/images';
+import * as HomeService from '~/Services/HomeService';
 
 const cx = classNames.bind(Styles);
 
 function Explore() {
-    const [activeButton, setActiveButton] = useState('Tất Cả');
+    // const [activeButton, setActiveButton] = useState('Tất Cả');
+    const [albumsByCategory, setAlbumsByCategory] = useState({});
 
-    const handleButtonClick = (buttonName) => {
-        setActiveButton(buttonName);
-    };
+    useEffect(() => {
+        const categories = ['Best Of 2025'];
+
+        const fetchAlbums = async () => {
+            try {
+                const results = await Promise.all(
+                    categories.map((category) =>
+                        HomeService.GetAlbumByCategory({
+                            categoryName: category,
+                        }),
+                    ),
+                );
+
+                // Convert format to key: [value]
+                const updatedAlbums = categories.reduce(
+                    (acc, category, index) => {
+                        acc[category.replace(/\s+/g, '_')] =
+                            results[index].albums;
+                        return acc;
+                    },
+                    {},
+                );
+
+                setAlbumsByCategory(updatedAlbums);
+            } catch (error) {
+                toast.error(error.message);
+            }
+        };
+
+        fetchAlbums();
+    }, []);
+
+    // const handleButtonClick = (buttonName) => {
+    //     setActiveButton(buttonName);
+    // };
 
     return (
         <div>
@@ -32,16 +69,17 @@ function Explore() {
             </div>
 
             <ListTopic>
-                <Topic />
-                <Topic />
-                <Topic />
-                <Topic />
-                <Topic />
-                <Topic />
-                <Topic />
+                {albumsByCategory.Best_Of_2025?.slice(0, 5).map((album) => (
+                    <Topic
+                        key={album._id}
+                        id={album._id}
+                        name={album.name}
+                        urlImageAlbum={album.urlImageAlbum}
+                    />
+                ))}
             </ListTopic>
 
-            <div className={cx('title')}>
+            {/* <div className={cx('title')}>
                 <div className={cx('title-name')}>Nhạc hot thịnh hành</div>
 
                 <div className={cx('title-view-all')}>
@@ -56,13 +94,17 @@ function Explore() {
                 <Topic />
                 <Topic />
                 <Topic />
-            </ListTopic>
-
+            </ListTopic> */}
+            {/* 
             <div className={cx('title')}>
                 <div className={cx('title-name')}>Gợi Ý Cho Bạn</div>
 
                 <div className={cx('title-view-all')}>
-                    <Button small primary leftIcon={<FontAwesomeIcon icon={faRefresh} />}>
+                    <Button
+                        small
+                        primary
+                        leftIcon={<FontAwesomeIcon icon={faRefresh} />}
+                    >
                         LÀM MỚI
                     </Button>
                 </div>
@@ -155,7 +197,13 @@ function Explore() {
                 <h3 className={cx('title-chart')}>#binchart</h3>
                 <div className={cx('box-chart-info')}>
                     <div>
-                        <div className={cx('box-top', 'chart-music-top1', 'box-top-active')}>
+                        <div
+                            className={cx(
+                                'box-top',
+                                'chart-music-top1',
+                                'box-top-active',
+                            )}
+                        >
                             <div>
                                 <span>1</span>
                             </div>
@@ -208,7 +256,11 @@ function Explore() {
                             </div>
                         </div>
 
-                        <Button outline small className={cx('btn-view-more-chart')}>
+                        <Button
+                            outline
+                            small
+                            className={cx('btn-view-more-chart')}
+                        >
                             Xem thêm
                         </Button>
                     </div>
@@ -216,7 +268,7 @@ function Explore() {
                         <Chart />
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             <div className={cx('partner-music')}>Đối Tác Âm Nhạc</div>
 

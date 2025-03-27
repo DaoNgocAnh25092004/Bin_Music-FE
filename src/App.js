@@ -1,20 +1,34 @@
 import { ToastContainer } from 'react-toastify';
-import { Outlet, BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import {
+    Outlet,
+    BrowserRouter as Router,
+    Route,
+    Routes,
+    Navigate,
+} from 'react-router-dom';
 import { Fragment, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { publicRoutes, protectedRoutes } from '~/routes';
 import DefaultLayout from '~/Layouts';
 import Login from './components/Login';
+import SplashCursor from '~/components/SplashCursor';
 
 function App() {
     const [isModalOpen, setModalOpen] = useState(false);
 
     // Function to check if user is logged in
     // If not, redirect to Home page
-    const ProtectedRoute = () => {
-        const checkLogin = localStorage.getItem('user');
+    const ProtectedRoute = ({ role }) => {
+        const user = useSelector((state) => state.user);
 
-        if (!checkLogin) {
+        // Need login
+        if (!user.isLogin) {
+            return <Navigate to="/" />;
+        }
+
+        // Only admin
+        if (role === 'admin' && user.role !== 'admin') {
             return <Navigate to="/" />;
         }
 
@@ -47,6 +61,8 @@ function App() {
     return (
         <Router>
             <div className="App">
+                {/* <SplashCursor /> */}
+
                 <ToastContainer />
 
                 <Login isOpen={isModalOpen} setIsOpen={setModalOpen} />
@@ -56,11 +72,13 @@ function App() {
                     {renderRoutes(publicRoutes)}
 
                     {/* Protected Routes for both users and admins */}
-
                     <Route element={<ProtectedRoute />}>
                         {renderRoutes(protectedRoutes.both)}
+                    </Route>
+
+                    {/* Only admin */}
+                    <Route element={<ProtectedRoute role="admin" />}>
                         {renderRoutes(protectedRoutes.admin)}
-                        {renderRoutes(protectedRoutes.user)}
                     </Route>
                 </Routes>
             </div>

@@ -3,6 +3,7 @@ import * as GoogleService from '~/Services/GoogleService';
 import { store } from '~/redux/store';
 import { logout } from '~/redux/slices/userSlice';
 import { toast } from 'react-toastify';
+import storage from 'redux-persist/lib/storage';
 
 // Create Axios (authorizedAxiosInstance) purpose for use custom and configuration for project
 let authorizedAxiosInstance = axios.create();
@@ -51,7 +52,10 @@ authorizedAxiosInstance.interceptors.response.use(
             GoogleService.LogoutGoogle();
 
             // Remove user info in local storage
-            localStorage.removeItem('user');
+            // localStorage.removeItem('user');
+
+            // Remove persist user redux
+            storage.removeItem('persist:user');
 
             // Logout info user in redux
             store.dispatch(logout());
@@ -85,10 +89,22 @@ authorizedAxiosInstance.interceptors.response.use(
                     })
                     .catch((_err) => {
                         // If any error form api refresh token then call logout
+
+                        // Logout google
                         GoogleService.LogoutGoogle();
-                        localStorage.removeItem('user');
+
+                        // Remove user info in local storage
+                        // localStorage.removeItem('user');
+
+                        // Remove persist user redux
+                        storage.removeItem('persist:user');
+
+                        // Logout info user in redux
                         store.dispatch(logout());
+
+                        // Navigation to home page
                         window.location.href = '/';
+
                         // Return error
                         return Promise.reject(_err);
                     })

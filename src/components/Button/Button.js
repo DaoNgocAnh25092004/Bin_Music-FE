@@ -15,6 +15,7 @@ function Button({
     rounded = false,
     small = false,
     large = false,
+    borderRadius4 = false,
     className,
     leftIcon,
     rightIcon,
@@ -66,6 +67,7 @@ function Button({
         large,
         disabled,
         rounded,
+        'border-radius-4': borderRadius4,
     });
 
     return (

@@ -4,7 +4,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    margin: 10px var(--spacing-lr-content) var(--spacing-list-music) calc(-1 * var(--spacing));
+    margin: 10px var(--spacing-lr-content) var(--spacing-list-music)
+        calc(-1 * var(--spacing));
 }
 
 .music {
@@ -23,6 +24,10 @@
 
         .control {
             display: flex;
+        }
+
+        .time {
+            display: none;
         }
 
         .box-info {
@@ -114,4 +119,58 @@
         display: flex;
         gap: 25px;
     }
+}
+
+.col-1 {
+    --columns: 1;
+    max-height: calc(
+        100vh - var(--header-height) - var(--control-height) -
+            var(--spacing-layout) * 2 - 71px
+    );
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    .box-info {
+        > div {
+            p {
+                max-width: 600px;
+                min-width: 300px;
+                width: 100%;
+            }
+        }
+        > p {
+            max-width: 600px;
+            min-width: 300px;
+            width: 100%;
+        }
+    }
+
+    .music {
+        &:hover {
+            .box-info {
+                > div {
+                    p {
+                        width: 70%;
+                    }
+                }
+                > p {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    .music:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.time {
+    color: var(--gray-light-color);
+    position: absolute;
+    right: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
 }

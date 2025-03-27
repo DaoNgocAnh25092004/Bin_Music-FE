@@ -1,12 +1,24 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useState, useMemo, useRef, useEffect, memo, useCallback } from 'react';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import {
+    nextSong,
+    playPause,
+    prevSong,
+    toggleRepeat,
+    toggleShuffle,
+    updateCurrentTime,
+    updateTimeSong,
+} from '~/redux/slices/playerSlice';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
 
 import styles from './Control.module.scss';
 import Image from '~/components/Image';
-import images from '~/assets/images';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay, faHeart } from '@fortawesome/free-regular-svg-icons';
 import {
+    faCirclePause,
     faEllipsis,
     faForwardStep,
     faMicrophoneLines,
@@ -16,34 +28,188 @@ import {
     faVolumeHigh,
     faWindowRestore,
 } from '@fortawesome/free-solid-svg-icons';
+import VolumeSlider from './Components/VolumeSlider/VolumeSlider';
+import { setVolume } from '~/redux/slices/volumeSlice';
 
 const cx = classNames.bind(styles);
 
 function Control() {
-    const [valueAudio, setValueAudio] = useState(0);
-    const [valueVolume, setValueVolume] = useState(0);
+    const {
+        currentSong,
+        isPlaying,
+        currentTimeSong,
+        timeSong,
+        isShuffle,
+        isRepeat,
+    } = useSelector((state) => state.player, shallowEqual);
+    const { volume } = useSelector((state) => state.volume, shallowEqual);
 
-    const handleInputChange = (e) => {
-        setValueAudio(e.target.value);
+    const [valueVolume, setValueVolume] = useState(volume);
+    const [currentTime, setCurrentTime] = useState(currentTimeSong);
+    const audioRef = useRef(null);
+    const dispatch = useDispatch();
+
+    //------------------------- Handle Center ----------------------------------
+
+    // Handle when input time music change
+    const handleTogglePlay = () => {
+        if (audioRef.current) {
+            dispatch(
+                playPause({
+                    isPlaying: !isPlaying,
+                    currentTimeSong: audioRef.current.currentTime,
+                }),
+            );
+        }
     };
 
-    const handleVolumeChange = (e) => {
-        setValueVolume(e.target.value);
+    // Update current time music to redux after 1s
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (audioRef.current) {
+                dispatch(updateCurrentTime(audioRef.current.currentTime));
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [dispatch, isPlaying]);
+
+    // Check music is playing
+    useEffect(
+        () => {
+            if (audioRef.current) {
+                audioRef.current.src = currentSong?.audioUrl; // Update new song
+                audioRef.current.currentTime = currentTimeSong || 0; // Update current time
+                // audioRef.current.load(); // Browser discovers new song
+
+                if (isPlaying) {
+                    audioRef.current.play();
+                }
+            }
+        },
+        // eslint-disable-next-line
+        [currentSong, isPlaying],
+    );
+
+    // Progress bar style of music
+    const progressBarStyle = useMemo(() => {
+        const progress = (currentTime / timeSong) * 100;
+
+        return `linear-gradient(to right, var(--blue-light-color) ${progress}%, var(--gray-medium-color) ${progress}%)`;
+    }, [currentTime, timeSong]);
+
+    // Seek music
+    const handleSeek = (e) => {
+        const seekTime = e.target.value;
+        setCurrentTime(seekTime);
+        if (audioRef.current) {
+            audioRef.current.currentTime = seekTime;
+        }
     };
 
-    const percentageVolume = (valueVolume / 100) * 100;
+    // Update current time music
+    const handleTimeUpdate = () => {
+        if (audioRef.current) {
+            setCurrentTime(audioRef.current.currentTime);
+        }
+    };
 
-    const percentageAudio = (valueAudio / 100) * 100;
+    // Format time become 00:00
+    const formatTime = (time) => {
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes < 10 ? '0' : ''}${minutes}:${
+            seconds < 10 ? '0' : ''
+        }${seconds}`;
+    };
+
+    // Move to next song
+    const handleNextSong = () => {
+        dispatch(nextSong());
+    };
+
+    // Move to prev song
+    const handlePrevSong = () => {
+        dispatch(prevSong());
+    };
+
+    // Toggle shuffle
+    const handleToggleShuffle = () => {
+        dispatch(toggleShuffle());
+    };
+
+    // Toggle repeat
+    const handleToggleRepeat = () => {
+        dispatch(toggleRepeat());
+    };
+
+    // ----------------------- Handle Volume ------------------------------
+
+    // Handle when change volume
+    const handleVolumeChange = useCallback(
+        (e) => {
+            const newVolume = e.target.value;
+            setValueVolume(newVolume);
+            dispatch(setVolume(newVolume));
+            if (audioRef.current) {
+                audioRef.current.volume = newVolume / 100;
+            }
+        },
+        [dispatch],
+    );
+
+    // Calculate percentage
+    const percentageVolume = useMemo(
+        () => (valueVolume / 100) * 100,
+        [valueVolume],
+    );
+
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.volume = valueVolume / 100;
+        }
+    }, [valueVolume]);
 
     return (
         <div className={cx('container')}>
+            <audio
+                ref={audioRef}
+                onTimeUpdate={handleTimeUpdate}
+                onLoadedMetadata={() => {
+                    if (audioRef.current) {
+                        dispatch(updateTimeSong(audioRef.current.duration));
+                    }
+                }}
+                onEnded={() => {
+                    if (isRepeat) {
+                        audioRef.current.currentTime = 0;
+                        audioRef.current.play();
+                    } else {
+                        dispatch(nextSong());
+                    }
+                }}
+                src={currentSong?.audioUrl}
+            />
+
             <div className={cx('box-left')}>
                 <div className={cx('box-left-img')}>
-                    <Image src={images.music} alt="music" />
+                    <Image
+                        src={currentSong?.thumbnailUrl}
+                        alt={currentSong?.name}
+                    />
                 </div>
                 <div className={cx('box-left-info')}>
-                    <p>Chúng ta của hiện tại ngày mai và tương lai</p>
-                    <p>Trịnh Thăng Bình, Đào Ngọc Anh ATP, HIEUTHUHAI</p>
+                    <p>{currentSong?.name}</p>
+                    <p>
+                        {currentSong?.listArtist.map((artist, index) => (
+                            <span key={index}>
+                                {artist.name}
+                                {index < currentSong.listArtist?.length - 1
+                                    ? ', '
+                                    : ''}
+                            </span>
+                        ))}
+                    </p>
                 </div>
                 <div className={cx('box-left-control')}>
                     <div>
@@ -56,37 +222,80 @@ function Control() {
             </div>
             <div className={cx('box-center')}>
                 <div>
-                    <div>
-                        <FontAwesomeIcon icon={faShuffle} />
-                    </div>
-                    <div>
+                    <Tippy
+                        content={
+                            isShuffle
+                                ? 'Tắt phát ngẫu nhiên'
+                                : 'Bật phát ngẫu nhiên'
+                        }
+                        placement="top"
+                        hideOnClick={false}
+                    >
+                        <div onClick={handleToggleShuffle}>
+                            <FontAwesomeIcon
+                                icon={faShuffle}
+                                style={{
+                                    color: isShuffle
+                                        ? 'var(--blue-light-color)'
+                                        : 'var(--white-color)',
+                                }}
+                            />
+                        </div>
+                    </Tippy>
+
+                    <div
+                        className={cx('icon-prev-song')}
+                        onClick={handlePrevSong}
+                    >
                         <FontAwesomeIcon icon={faForwardStep} />
                     </div>
                     <div>
-                        <FontAwesomeIcon icon={faCirclePlay} />
+                        <FontAwesomeIcon
+                            onClick={handleTogglePlay}
+                            icon={isPlaying ? faCirclePause : faCirclePlay}
+                        />
                     </div>
-                    <div>
+
+                    <div onClick={handleNextSong}>
                         <FontAwesomeIcon icon={faForwardStep} />
                     </div>
-                    <div>
-                        <FontAwesomeIcon icon={faRepeat} />
-                    </div>
+
+                    <Tippy
+                        content={
+                            isRepeat
+                                ? 'Tắt lặp lại bài hát'
+                                : 'Bật lặp lại bài hát'
+                        }
+                        placement="top"
+                        hideOnClick={false}
+                    >
+                        <div onClick={handleToggleRepeat}>
+                            <FontAwesomeIcon
+                                icon={faRepeat}
+                                style={{
+                                    color: isRepeat
+                                        ? 'var(--blue-light-color)'
+                                        : 'var(--white-color)',
+                                }}
+                            />
+                        </div>
+                    </Tippy>
                 </div>
                 <div>
-                    <span>00:00</span>
+                    <span>{formatTime(currentTime)}</span>
                     <input
                         className={cx('audio-slider')}
                         type="range"
-                        value={valueAudio}
+                        value={currentTime}
                         step="1"
                         min="0"
-                        max="100"
-                        onChange={handleInputChange}
-                        style={{
-                            background: `linear-gradient(to right, var(--blue-light-color) ${percentageAudio}%, var(--gray-medium-color) ${percentageAudio}%)`,
-                        }}
+                        max={audioRef.current?.duration || 100}
+                        onChange={handleSeek}
+                        style={
+                            progressBarStyle && { background: progressBarStyle }
+                        }
                     />
-                    <span>03:23</span>
+                    <span>{formatTime(timeSong)}</span>
                 </div>
             </div>
             <div className={cx('box-right')}>
@@ -99,17 +308,10 @@ function Control() {
                     </div>
                     <div>
                         <FontAwesomeIcon icon={faVolumeHigh} />
-                        <input
-                            className={cx('volume-slider')}
-                            type="range"
+                        <VolumeSlider
                             value={valueVolume}
-                            step="1"
-                            min="0"
-                            max="100"
                             onChange={handleVolumeChange}
-                            style={{
-                                background: `linear-gradient(to right, var(--blue-light-color) ${percentageVolume}%, var(--gray-medium-color) ${percentageVolume}%)`,
-                            }}
+                            percentageVolume={percentageVolume}
                         />
                     </div>
                 </div>
@@ -122,4 +324,4 @@ function Control() {
     );
 }
 
-export default Control;
+export default memo(Control);

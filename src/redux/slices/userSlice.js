@@ -10,12 +10,12 @@ const initialState = {
 };
 
 export const userSlice = createSlice({
-    devTools: true,
     name: 'user',
     initialState,
     reducers: {
         updateUser: (state, action) => {
-            const { userId, name, email, avatar, role, isLogin } = action.payload;
+            const { userId, name, email, avatar, role, isLogin } =
+                action.payload;
 
             state.id = userId;
             state.name = name;
@@ -26,12 +26,8 @@ export const userSlice = createSlice({
         },
 
         logout: (state) => {
-            state.id = '';
-            state.name = '';
-            state.email = '';
-            state.avatar = '';
-            state.role = '';
-            state.isLogin = false;
+            Object.assign(state, initialState);
+            localStorage.removeItem('user');
         },
     },
 });

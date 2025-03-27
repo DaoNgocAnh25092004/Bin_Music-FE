@@ -1,0 +1,17 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: var(--blue-light-color);
+    width: var(--sidebar-width);
+}
+
+.logo {
+    font-size: 30px;
+    font-family: cursive;
+    color: var(--white-color);
+    display: flex;
+    align-items: center;
+    padding: 15px 25px 5px;
+}

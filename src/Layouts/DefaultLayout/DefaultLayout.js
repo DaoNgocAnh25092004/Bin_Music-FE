@@ -1,9 +1,8 @@
 import classNames from 'classnames/bind';
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import 'react-perfect-scrollbar/dist/css/styles.css';
+import { memo } from 'react';
 
 import Header from '~/Layouts/Components/Header';
-import Sidebar from '~/Layouts/Components/Sidebar';
+import DefaultSidebar from '~/Layouts/Components/DefaultSidebar';
 import Control from '~/Layouts/Components/Control';
 import styles from './DefaultLayout.module.scss';
 
@@ -16,17 +15,17 @@ function DefaultLayout({ children }) {
             <Header />
 
             {/* Sidebar */}
-            <Sidebar />
+            <DefaultSidebar />
 
             {/* Content */}
 
-            <div className={cx('content')}>
-                <PerfectScrollbar style={{ height: '100%' }}>{children}</PerfectScrollbar>
-            </div>
+            <main className={cx('content')}>
+                <div className={cx('scroll-content')}>{children}</div>
+            </main>
             {/* Control */}
             <Control />
         </div>
     );
 }
 
-export default DefaultLayout;
+export default memo(DefaultLayout);
