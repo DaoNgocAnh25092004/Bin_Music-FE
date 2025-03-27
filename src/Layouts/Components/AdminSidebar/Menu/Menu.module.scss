@@ -1,0 +1,39 @@
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 10px 8px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--white-color);
+    line-height: 15px;
+    cursor: pointer;
+    position: relative;
+
+    &:hover,
+    &.active {
+        // &:after {
+        //     content: '';
+        //     position: absolute;
+        //     width: 1.5px;
+        //     height: 100%;
+        //     background: var(--black-color);
+        //     left: 0;
+        // }
+        color: var(--blue-light-color);
+        background: var(--white-color);
+        border-radius: 8px;
+        transition: all 0.3s ease-in-out;
+    }
+}
+
+.title {
+    margin-top: 2px;
+}
+
+.icon > svg,
+.icon-img > img {
+    width: 23px;
+    height: 23px;
+}

@@ -1,0 +1,45 @@
+.box-input {
+    margin-top: 20px;
+}
+
+.box-input > div:nth-child(2) {
+    position: relative;
+}
+
+.box-input > div:nth-child(2) > svg {
+    position: absolute;
+    top: 22px;
+    right: 15px;
+    transform: translateY(-50%);
+}
+
+.input {
+    width: 100%;
+    padding: 12px 30px 12px 12px;
+    border: 2px solid rgb(232, 232, 232);
+    transition: border-color 0.2s ease-in-out;
+    border-radius: 4px;
+
+    &:focus-within {
+        border-color: #c4c3c3;
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(82, 82, 82, 0.25);
+    }
+
+    &[type='file'] {
+        padding: 9px 30px 9px 12px;
+        margin-top: 0.5px;
+    }
+}
+
+.error {
+    width: 100%;
+    font-size: 15px;
+    color: red;
+}
+
+.input-error {
+    border-color: red !important;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.35) !important;
+}

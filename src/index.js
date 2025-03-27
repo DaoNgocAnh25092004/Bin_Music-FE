@@ -5,7 +5,8 @@ import reportWebVitals from './reportWebVitals';
 import GlobalStyles from '~/components/GlobalStyles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
-import { store } from './redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './redux/store';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -16,11 +17,13 @@ root.render(
     // <React.StrictMode>
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GG_CLIENT_ID}>
         <Provider store={store}>
-            <QueryClientProvider client={queryClient}>
-                <GlobalStyles>
-                    <App />
-                </GlobalStyles>
-            </QueryClientProvider>
+            <PersistGate loading={null} persistor={persistor}>
+                <QueryClientProvider client={queryClient}>
+                    <GlobalStyles>
+                        <App />
+                    </GlobalStyles>
+                </QueryClientProvider>
+            </PersistGate>
         </Provider>
     </GoogleOAuthProvider>,
 

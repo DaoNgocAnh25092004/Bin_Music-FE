@@ -113,6 +113,7 @@
 
         > div:nth-child(3) {
             font-size: 35px;
+            flex-shrink: 0;
 
             &:hover {
                 cursor: pointer;
@@ -133,6 +134,8 @@
         }
         > span:first-child {
             color: var(--gray-light-color);
+            width: 30px;
+            flex-shrink: 0;
         }
 
         > span:last-child {
@@ -141,9 +144,14 @@
     }
 }
 
+.icon-prev-song {
+    svg {
+        transform: rotate(180deg);
+    }
+}
+
 /* Thanh trượt */
-.audio-slider,
-.volume-slider {
+.audio-slider {
     margin: 0 10px;
     -webkit-appearance: none;
     appearance: none;
@@ -157,8 +165,7 @@
 }
 
 /* Thumb ban đầu: ẩn */
-.audio-slider::-webkit-slider-thumb,
-.volume-slider::-webkit-slider-thumb {
+.audio-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 0;
@@ -169,8 +176,7 @@
 }
 
 /* Khi hover vào thanh, thumb xuất hiện */
-.audio-slider:hover::-webkit-slider-thumb,
-.volume-slider:hover::-webkit-slider-thumb {
+.audio-slider:hover::-webkit-slider-thumb {
     width: 14px;
     height: 14px;
     background: var(--blue-light-color);
@@ -179,15 +185,13 @@
 }
 
 /* Khi hover vào thumb, phóng to */
-.audio-slider:hover::-webkit-slider-thumb:hover,
-.volume-slider:hover::-webkit-slider-thumb:hover {
+.audio-slider:hover::-webkit-slider-thumb:hover {
     width: 18px;
     height: 18px;
     border: 2px solid #fff;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
 }
-.audio-slider:hover,
-.volume-slider:hover {
+.audio-slider:hover {
     height: 8px;
     border-radius: 25px;
 }
@@ -240,8 +244,4 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
     }
-}
-
-.volume-slider {
-    width: 100px;
 }

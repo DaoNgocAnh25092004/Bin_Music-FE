@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { GoogleLogin } from '@react-oauth/google';
 import { toast } from 'react-toastify';
@@ -18,42 +17,40 @@ const cx = className.bind(styles);
 function Login({ isOpen, setIsOpen, onLoginSuccess }) {
     const dispatch = useDispatch();
 
-    const handleLoginSuccess = useCallback(
-        async (response) => {
-            try {
-                console.log('🚀 ~ response:', response);
-                // Call login google service
-                const result = await GoogleService.LoginGoogle(response);
-                // Save user info in redux
-                result.user.isLogin = true;
-                dispatch(updateUser(result.user));
+    const handleLoginSuccess = async (response) => {
+        try {
+            console.log('🚀 ~ handleLoginSuccess ~ response:', response);
+            // Call login google service
+            const result = await GoogleService.LoginGoogle(response);
 
-                // Save user info in local storage
-                localStorage.setItem('user', JSON.stringify(result.user));
+            // Save user info in redux
+            result.user.isLogin = true;
+            dispatch(updateUser(result.user));
 
-                // // Save token in local storage
-                // localStorage.setItem('accessToken', result.accessToken);
-                // localStorage.setItem('refreshToken', result.refreshToken);
+            // Save user info in local storage
+            localStorage.setItem('user', JSON.stringify(result.user));
 
-                // Close modal
-                setIsOpen(false);
+            // Close modal
+            setIsOpen(false);
 
-                if (onLoginSuccess) {
-                    onLoginSuccess(result.user);
-                }
-            } catch (error) {
-                toast.error('Đăng nhập thất bại');
+            if (onLoginSuccess) {
+                onLoginSuccess(result.user);
             }
-        },
-        [dispatch, setIsOpen, onLoginSuccess],
-    );
+        } catch (error) {
+            toast.error('Đăng nhập thất bại');
+        }
+    };
 
-    const handleLoginFailure = useCallback(() => {
+    const handleLoginFailure = () => {
         toast.error('Đăng nhập thất bại');
-    }, []);
+    };
 
     return (
-        <Modal className={cx('box-login')} isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <Modal
+            className={cx('box-login')}
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+        >
             <div className={cx('background-login')}>
                 <Image src={images.backGroundLogin} alt="Background login" />
             </div>
@@ -72,7 +69,10 @@ function Login({ isOpen, setIsOpen, onLoginSuccess }) {
                 access_type="offline"
             />
 
-            <p>Bằng cách đăng nhập tài khoản, bạn đã đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của Bin Music</p>
+            <p>
+                Bằng cách đăng nhập tài khoản, bạn đã đồng ý với Điều khoản dịch
+                vụ và Chính sách bảo mật của Bin Music
+            </p>
         </Modal>
     );
 }

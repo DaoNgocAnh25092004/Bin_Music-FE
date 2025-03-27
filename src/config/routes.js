@@ -1,4 +1,5 @@
 const routes = {
+    // Page public
     explore: '/',
     library: '/library',
     binChart: '/bin-chart',
@@ -7,6 +8,17 @@ const routes = {
     topicAndCategory: '/topic-and-category',
     top100: '/top-100',
     page404: '*',
+
+    // Page: id
+    albumDetail: '/album/:albumId',
+
+    // Page admin
+    musicAdmin: '/admin/music',
+    musicAdminCreate: '/admin/music/create',
+    albumAdmin: '/admin/album',
+    albumAdminCreate: '/admin/album/create',
+    categoryAlbumAdmin: '/admin/album-category',
+    artist: '/admin/artist',
 };
 
 export default routes;

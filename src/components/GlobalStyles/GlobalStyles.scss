@@ -1,7 +1,7 @@
 @import 'normalize.css';
 
 :root {
-    --background-color: #0a0a0a;
+    --background-color: #141414;
     --popper-background-color: rgb(46, 46, 46);
     --white-color: #fff;
     --black-color: #000;
@@ -10,7 +10,11 @@
     --turquoise-color: #02938c;
     --purple-color: rgba(51, 16, 76, 0.95);
 
-    --cottonCandy-color: radial-gradient(50% 124.93% at 95.86% -10%, #3efad9 0, hsla(0, 0%, 100%, 0) 100%),
+    --cottonCandy-color: radial-gradient(
+            50% 124.93% at 95.86% -10%,
+            #3efad9 0,
+            hsla(0, 0%, 100%, 0) 100%
+        ),
         linear-gradient(91.56deg, #ff9357 1.54%, #9100ff 98.71%);
 
     /*Sắc thái xanh*/
@@ -57,7 +61,7 @@ body {
 // Scrollbar
 html *::-webkit-scrollbar {
     border-radius: 0;
-    width: 8px;
+    width: 4px;
 }
 
 html ::-webkit-scrollbar-thumb {
@@ -68,6 +72,11 @@ html ::-webkit-scrollbar-thumb {
 html *::-webkit-scrollbar-track {
     border-radius: 0;
     background-color: rgba(0, 0, 0, 0);
+}
+
+html *::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
+    background-color: #6b6b6b;
 }
 
 //Fonts chữ

@@ -1,2 +1,3 @@
 export { default } from './DefaultLayout';
-export { default as HeaderOnly } from './HeaderOnly';
+export { default as AdminLayout } from './AdminLayout';
+export { default as EmptyLayout } from './EmptyLayout';
