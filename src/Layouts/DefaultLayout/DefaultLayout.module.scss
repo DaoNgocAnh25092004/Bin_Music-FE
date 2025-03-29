@@ -1,0 +1,32 @@
+.app {
+    width: 100%;
+    height: 100vh;
+    background-color: var(--black-color);
+    position: relative;
+}
+
+// Content
+.content {
+    position: absolute; // Đổi từ fixed thành absolute
+    top: calc(var(--header-height) + var(--spacing-layout));
+    left: calc(var(--sidebar-width) + var(--spacing-layout));
+    bottom: calc(var(--control-height) + var(--spacing-layout));
+    right: 0;
+    background-color: var(--background-color);
+    padding: 20px 0 20px var(--spacing-lr-content);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    padding-right: 10px;
+    position: relative;
+    height: calc(
+        100vh - var(--header-height) - var(--spacing-layout) -
+            var(--control-height)
+    );
+}
