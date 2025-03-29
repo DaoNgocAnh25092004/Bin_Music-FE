@@ -17,3 +17,11 @@ export const GetAlbumByCategory = async ({ categoryName }) => {
 
     return response.data;
 };
+
+export const GetSuggestedSongs = async () => {
+    const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/home/suggested-songs`,
+    );
+
+    return response.data;
+};

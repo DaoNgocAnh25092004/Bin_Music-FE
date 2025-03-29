@@ -10,7 +10,7 @@ import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
-function Topic({ id, name, urlImageAlbum }) {
+function Topic({ id, name, urlImageAlbum, aosDelay }) {
     const navigate = useNavigate();
 
     const handleNavigate = () => {
@@ -18,7 +18,12 @@ function Topic({ id, name, urlImageAlbum }) {
     };
 
     return (
-        <div onClick={handleNavigate} className={cx('topic')}>
+        <div
+            onClick={handleNavigate}
+            className={cx('topic')}
+            data-aos="fade-right"
+            data-aos-delay={aosDelay}
+        >
             <div className={cx('box-img')}>
                 <Image src={urlImageAlbum} alt={name} />
                 <div className={cx('control-img')}>
@@ -39,6 +44,7 @@ Topic.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     urlImageAlbum: PropTypes.string.isRequired,
+    aosDelay: PropTypes.number,
 };
 
 export default Topic;

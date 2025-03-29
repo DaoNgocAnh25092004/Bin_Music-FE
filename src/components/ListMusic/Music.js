@@ -1,5 +1,6 @@
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 
 import styles from './ListMusic.module.scss';
 import Image from '~/components/Image';
@@ -10,11 +11,20 @@ import {
     faPlay,
 } from '@fortawesome/free-solid-svg-icons';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
+import images from '~/assets/images';
 
 const cx = classNames.bind(styles);
 
 function Music({ music, handlePlaySong }) {
     const [duration, setDuration] = useState('00:00');
+    const { currentSong, isPlaying } = useSelector(
+        (state) => state.player,
+        shallowEqual,
+    );
+    const checkPlaying = useMemo(
+        () => currentSong?._id === music._id && isPlaying,
+        [currentSong, isPlaying, music],
+    );
 
     useEffect(() => {
         if (music.audioUrl) {
@@ -36,9 +46,12 @@ function Music({ music, handlePlaySong }) {
     }, [music.audioUrl]);
 
     return (
-        <div className={cx('music')} onClick={() => handlePlaySong(music)}>
+        <div
+            className={cx('music', { playing: checkPlaying })}
+            onClick={() => handlePlaySong(music)}
+        >
             <div className={cx('box-img')}>
-                <Image src={music.thumbnailUrl} alt="Nhạc" />
+                <Image src={music.thumbnailUrl} alt={music.name} />
             </div>
             <div className={cx('box-info')}>
                 <div>
@@ -58,7 +71,18 @@ function Music({ music, handlePlaySong }) {
             <div className={cx('time')}>{duration}</div>
 
             <div className={cx('control')}>
-                <FontAwesomeIcon className={cx('icon-play')} icon={faPlay} />
+                {checkPlaying ? (
+                    <Image
+                        src={images.songPlaying}
+                        className={cx('img-playing')}
+                    />
+                ) : (
+                    <FontAwesomeIcon
+                        className={cx('icon-play')}
+                        icon={faPlay}
+                    />
+                )}
+
                 <div>
                     <FontAwesomeIcon icon={faMicrophone} />
                     <FontAwesomeIcon icon={faHeart} />

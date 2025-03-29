@@ -3,24 +3,38 @@ import { useEffect, useState } from 'react';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { toast } from 'react-toastify';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import Styles from './Explore.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import ListTopic, { Topic } from './ListTopic';
-// import ListMusic, { Music } from '../../components/ListMusic';
-// import Button from '~/components/Button';
 // import Chart from './Chart';
 import Image from '~/components/Image';
 import images from '~/assets/images';
 import * as HomeService from '~/Services/HomeService';
+import Button from '~/components/Button';
+import ListMusic, { Music } from '~/components/ListMusic';
+import {
+    playPause,
+    setCurrentSong,
+    setPlayList,
+    updateCurrentTime,
+} from '~/redux/slices/playerSlice';
 
 const cx = classNames.bind(Styles);
 
 function Explore() {
     // const [activeButton, setActiveButton] = useState('Tất Cả');
-    const [albumsByCategory, setAlbumsByCategory] = useState({});
+    const [albumsByCategory, setAlbumsByCategory] = useState([]);
+    const [suggestedSongs, setSuggestedSongs] = useState([]);
+    const dispatch = useDispatch();
+    const { currentSong, currentTimeSong } = useSelector(
+        (state) => state.player,
+        shallowEqual,
+    );
 
+    // Call API album by categories
     useEffect(() => {
         const categories = ['Best Of 2025'];
 
@@ -53,6 +67,40 @@ function Explore() {
         fetchAlbums();
     }, []);
 
+    // Call API Suggested Songs
+    const fetchSuggestedSongs = async () => {
+        try {
+            const response = await HomeService.GetSuggestedSongs();
+            if (response.success) {
+                setSuggestedSongs(response.songs);
+            } else {
+                toast.error('Không thể tải danh sách gợi ý');
+            }
+        } catch (error) {
+            toast.error('Lỗi khi tải danh sách gợi ý');
+        }
+    };
+
+    useEffect(() => {
+        fetchSuggestedSongs();
+    }, []);
+
+    const handlePlaySong = (music) => {
+        if (currentSong?._id !== music._id) {
+            // Current song
+            dispatch(setCurrentSong(music));
+
+            // Update current new time the song = 0
+            dispatch(updateCurrentTime(0));
+
+            // Set Playlist
+            dispatch(setPlayList(suggestedSongs));
+        } else {
+            // Play when music is paused and set current time
+            dispatch(playPause({ isPlaying: true, currentTimeSong }));
+        }
+    };
+
     // const handleButtonClick = (buttonName) => {
     //     setActiveButton(buttonName);
     // };
@@ -69,14 +117,17 @@ function Explore() {
             </div>
 
             <ListTopic>
-                {albumsByCategory.Best_Of_2025?.slice(0, 5).map((album) => (
-                    <Topic
-                        key={album._id}
-                        id={album._id}
-                        name={album.name}
-                        urlImageAlbum={album.urlImageAlbum}
-                    />
-                ))}
+                {albumsByCategory.Best_Of_2025?.slice(0, 5).map(
+                    (album, index) => (
+                        <Topic
+                            key={album._id}
+                            id={album._id}
+                            name={album.name}
+                            urlImageAlbum={album.urlImageAlbum}
+                            aosDelay={index * 200}
+                        />
+                    ),
+                )}
             </ListTopic>
 
             {/* <div className={cx('title')}>
@@ -95,7 +146,7 @@ function Explore() {
                 <Topic />
                 <Topic />
             </ListTopic> */}
-            {/* 
+
             <div className={cx('title')}>
                 <div className={cx('title-name')}>Gợi Ý Cho Bạn</div>
 
@@ -104,27 +155,24 @@ function Explore() {
                         small
                         primary
                         leftIcon={<FontAwesomeIcon icon={faRefresh} />}
+                        onClick={fetchSuggestedSongs}
                     >
                         LÀM MỚI
                     </Button>
                 </div>
             </div>
 
-            <ListMusic>
-                <Music />
-                <Music />
-                <Music />
-                <Music />
-                <Music />
-                <Music />
-                <Music />
-                <Music />
-                <Music />
-                <Music />
-                <Music />
-                <Music />
+            <ListMusic dataAos="fade-right">
+                {suggestedSongs.map((music) => (
+                    <Music
+                        key={music._id}
+                        music={music}
+                        handlePlaySong={handlePlaySong}
+                    />
+                ))}
             </ListMusic>
 
+            {/*
             <div className={cx('title')}>
                 <div className={cx('title-name')}>Chill</div>
 
@@ -272,7 +320,7 @@ function Explore() {
 
             <div className={cx('partner-music')}>Đối Tác Âm Nhạc</div>
 
-            <div className={cx('list-partner-music')}>
+            <div className={cx('list-partner-music')} data-aos="fade-right">
                 <div className={cx('box-partner-music')}>
                     <div>
                         <Image src={images.partner1} alt="image" />

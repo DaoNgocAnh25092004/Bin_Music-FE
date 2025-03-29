@@ -5,9 +5,14 @@ import styles from './ListMusic.module.scss';
 
 const cx = classNames.bind(styles);
 
-function ListMusic({ children, col_1 }) {
+function ListMusic({ children, col_1, dataAos }) {
     return (
-        <div className={cx('list-music', { 'col-1': col_1 })}>{children}</div>
+        <div
+            data-aos={dataAos}
+            className={cx('list-music', { 'col-1': col_1 })}
+        >
+            {children}
+        </div>
     );
 }
 

@@ -8,6 +8,7 @@ import {
     setPlayList,
     updateCurrentTime,
 } from '~/redux/slices/playerSlice';
+import AOS from 'aos';
 
 import styles from './ALbumDetail.module.scss';
 import * as AlbumService from '~/Services/AlbumService';
@@ -29,6 +30,11 @@ function AlbumDetail() {
 
     useEffect(
         () => {
+            AOS.init({
+                duration: 1000,
+                once: true,
+            });
+
             const fetchData = async () => {
                 const { album } = await AlbumService.GetAlbumById({ albumId });
 
@@ -100,7 +106,7 @@ function AlbumDetail() {
 
                     <p>THỜI GIAN</p>
                 </div>
-                <ListMusic col_1>
+                <ListMusic dataAos="fade-down" col_1>
                     {album.songs?.map((music) => (
                         <Music
                             key={music._id}

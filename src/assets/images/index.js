@@ -6,6 +6,7 @@ const images = {
     page404: require('~/assets/images/404.png'),
     iconArtist: require('~/assets/images/artist-default.png'),
     iconArtistActive: require('~/assets/images/artist-active.png'),
+    songPlaying: require('~/assets/images/icon-playing.gif'),
     partner1: require('~/assets/images/ListPartner/partner1.png'),
     partner2: require('~/assets/images/ListPartner/partner2.png'),
     partner3: require('~/assets/images/ListPartner/partner3.png'),

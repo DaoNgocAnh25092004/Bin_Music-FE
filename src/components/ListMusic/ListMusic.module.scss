@@ -44,6 +44,41 @@
             }
         }
     }
+    &.playing {
+        background: rgba(0, 0, 0, 0.6);
+
+        .control {
+            display: flex;
+        }
+
+        .img-playing {
+            width: 20px;
+            height: 20px;
+            margin-left: 15px;
+        }
+
+        .control > div {
+            display: none;
+        }
+
+        .time {
+            display: none;
+        }
+
+        .box-info {
+            > div {
+                p {
+                    width: 120px;
+                    transition: all 0.1s linear;
+                }
+            }
+
+            > p {
+                width: 190px;
+                transition: all 0.1s linear;
+            }
+        }
+    }
 }
 
 .box-img {

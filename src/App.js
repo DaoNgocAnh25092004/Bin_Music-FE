@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import { Fragment, useState } from 'react';
 import { useSelector } from 'react-redux';
+import 'aos/dist/aos.css';
 
 import { publicRoutes, protectedRoutes } from '~/routes';
 import DefaultLayout from '~/Layouts';
@@ -61,7 +62,7 @@ function App() {
     return (
         <Router>
             <div className="App">
-                {/* <SplashCursor /> */}
+                <SplashCursor />
 
                 <ToastContainer />
 
