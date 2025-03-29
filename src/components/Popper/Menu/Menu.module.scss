@@ -1,0 +1,56 @@
+//Menu wrapper
+.menu-list {
+    width: 270px;
+    //Menu item
+    .menu-item {
+        margin-left: 0 !important;
+        color: #000;
+        width: 100%;
+        justify-content: start;
+        border-radius: 0;
+        padding: 11px 16px;
+        height: 42px;
+
+        &.separate {
+            border-top: 1px solid rgba(22, 24, 35, 0.12);
+        }
+        &:hover {
+            color: #1a1a1a;
+            background: #e8ebed;
+        }
+    }
+}
+
+//Menu popper
+.menu-popper {
+    padding-bottom: 8px;
+}
+
+.menu-body {
+    overflow-y: auto;
+}
+
+// Header menu
+.header {
+    position: relative;
+    height: 50px;
+    margin-top: -8px;
+    flex-shrink: 0;
+}
+
+.back {
+    position: absolute;
+    background-color: transparent;
+    height: 100%;
+    width: 50px;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
