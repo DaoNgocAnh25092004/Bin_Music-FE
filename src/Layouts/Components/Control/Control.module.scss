@@ -1,0 +1,247 @@
+.container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--control-height);
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    gap: 20px;
+
+    > div {
+        width: calc(100% / 3);
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.box-left {
+    .box-left-img {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 64px;
+        flex-shrink: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+    }
+
+    .box-left-info {
+        margin-left: 10px;
+
+        p:first-child {
+            font-size: 16px;
+            color: var(--white-color);
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        p:last-child {
+            font-size: 13px;
+            color: var(--gray-light-color);
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: pointer;
+
+            &:hover {
+                color: var(--blue-light-color);
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .box-left-control {
+        flex: 1;
+        color: var(--white-color);
+        margin-left: 30px;
+        display: flex;
+        gap: 10px;
+
+        > div {
+            width: 30px;
+            height: 30px;
+            border-radius: 100rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &:hover {
+                background-color: var(--gray-medium-color);
+            }
+        }
+    }
+}
+
+.box-center {
+    flex-direction: column;
+    justify-content: center;
+
+    > div:first-child {
+        color: var(--white-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        font-size: 17px;
+        > div:not(:nth-child(3)) {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 100rem;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--gray-medium-color);
+            }
+        }
+
+        > div:nth-child(3) {
+            font-size: 35px;
+            flex-shrink: 0;
+
+            &:hover {
+                cursor: pointer;
+                color: var(--blue-light-color);
+            }
+        }
+    }
+
+    > div:last-child {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        > span {
+            font-size: 12px;
+            margin-bottom: -2px;
+        }
+        > span:first-child {
+            color: var(--gray-light-color);
+            width: 30px;
+            flex-shrink: 0;
+        }
+
+        > span:last-child {
+            color: var(--white-color);
+        }
+    }
+}
+
+.icon-prev-song {
+    svg {
+        transform: rotate(180deg);
+    }
+}
+
+/* Thanh trượt */
+.audio-slider {
+    margin: 0 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px; /* Chiều cao của thanh */
+    background: var(--gray-medium-color); /* Mặc định: 30% đã chạy */
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+/* Thumb ban đầu: ẩn */
+.audio-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 0;
+    height: 0;
+    background: transparent;
+    border-radius: 50%;
+    transition: width 0.3s ease, height 0.3s ease, background 0.3s ease;
+}
+
+/* Khi hover vào thanh, thumb xuất hiện */
+.audio-slider:hover::-webkit-slider-thumb {
+    width: 14px;
+    height: 14px;
+    background: var(--blue-light-color);
+    border: 2px solid white;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Khi hover vào thumb, phóng to */
+.audio-slider:hover::-webkit-slider-thumb:hover {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #fff;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
+}
+.audio-slider:hover {
+    height: 8px;
+    border-radius: 25px;
+}
+
+.box-right {
+    justify-content: flex-end;
+    color: var(--white-color);
+
+    > div:first-child {
+        display: flex;
+        gap: 8px;
+        padding-right: 13px;
+        border-right: 1px solid var(--gray-medium-color);
+
+        > div:not(:last-child) {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 100rem;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--gray-medium-color);
+            }
+        }
+
+        > div:last-child {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 35px;
+            margin-left: 5px;
+        }
+    }
+
+    > div:last-child {
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        margin-left: 23px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    }
+}

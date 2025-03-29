@@ -1,0 +1,35 @@
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #838383;
+    line-height: 15px;
+    cursor: pointer;
+    position: relative;
+
+    &:hover,
+    &.active {
+        &:after {
+            content: '';
+            position: absolute;
+            width: 1.5px;
+            height: 100%;
+            background: var(--blue-light-color);
+            left: 0;
+        }
+        color: var(--white-color);
+        background: #121212;
+    }
+}
+
+.title {
+    margin-top: 2px;
+}
+
+.icon > svg {
+    width: 23px;
+    height: 23px;
+}

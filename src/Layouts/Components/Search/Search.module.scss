@@ -1,0 +1,23 @@
+.search {
+    width: 400px;
+    height: 40px;
+    border-radius: 25px;
+    border: 2px solid var(--white-color);
+    transition: border-color 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    &:focus-within {
+        border-color: #c4c3c3;
+    }
+}
+.icon-search {
+    margin: 0 15px;
+    color: var(--white-color);
+}
+.input {
+    flex: 1;
+    margin-right: 15px;
+    font-size: 15px;
+    background-color: transparent;
+    color: var(--white-color);
+}
