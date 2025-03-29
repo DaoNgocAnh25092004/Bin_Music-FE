@@ -1,0 +1,94 @@
+.container {
+    padding: 20px;
+}
+
+.box-title {
+    display: flex;
+    justify-content: space-between;
+
+    > h2 {
+        width: 70%;
+        color: var(--blue-light-color);
+    }
+}
+.table-wrapper {
+    height: 87vh;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+    div {
+        /* Tùy chỉnh thanh cuộn ngang */
+        &::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            cursor: pointer;
+            background-color: #b9b9b9;
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: rgba(0, 0, 0, 0);
+            border-radius: 10px;
+        }
+    }
+}
+.title-table {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.btn-delete {
+    color: var(--white-color);
+    background-color: var(--red-color);
+
+    &:hover {
+        background-color: rgba(255, 0, 0, 0.6);
+    }
+}
+
+table {
+    width: max-content;
+    border-collapse: collapse;
+}
+
+table thead {
+    background-color: var(--blue-light-color);
+}
+table,
+tr {
+    height: 50px;
+}
+
+thead th {
+    color: var(--white-color);
+}
+
+tbody tr:nth-child(even) {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+    text-align: center;
+    min-width: 10px;
+    max-width: 1000px;
+    word-wrap: break-word;
+    white-space: nowrap;
+    padding: 10px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+th:first-child,
+td:first-child {
+    border-left: none;
+}
+
+td > img {
+    width: 50px;
+    height: 50px;
+}
