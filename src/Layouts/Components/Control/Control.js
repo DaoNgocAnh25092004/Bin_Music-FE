@@ -30,6 +30,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import VolumeSlider from './Components/VolumeSlider/VolumeSlider';
 import { setVolume } from '~/redux/slices/volumeSlice';
+import { openLyric } from '~/redux/slices/lyricSlice';
 
 const cx = classNames.bind(styles);
 
@@ -69,7 +70,7 @@ function Control() {
             if (audioRef.current) {
                 dispatch(updateCurrentTime(audioRef.current.currentTime));
             }
-        }, 1000);
+        }, 500);
 
         return () => clearInterval(interval);
     }, [dispatch, isPlaying]);
@@ -300,7 +301,7 @@ function Control() {
             </div>
             <div className={cx('box-right')}>
                 <div>
-                    <div>
+                    <div onClick={() => dispatch(openLyric())}>
                         <FontAwesomeIcon icon={faMicrophoneLines} />
                     </div>
                     <div>
