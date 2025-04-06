@@ -261,11 +261,6 @@ function AlbumAdminCreate() {
 
         formData.append('name', forms.name);
         formData.append('urlImageAlbum', forms.urlImageAlbum);
-        console.log(
-            '🚀 ~ handleAddAlbum ~ forms.urlImageAlbum:',
-            forms.urlImageAlbum,
-        );
-
         formData.append(
             'listMusic',
             JSON.stringify(listMusic.map((song) => song._id)),
