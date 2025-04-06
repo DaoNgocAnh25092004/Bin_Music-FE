@@ -3,16 +3,16 @@ import { useEffect, useRef } from 'react';
 
 function SplashCursor({
     // You can customize these props if you want
-    SIM_RESOLUTION = 32,
-    DYE_RESOLUTION = 360,
-    CAPTURE_RESOLUTION = 128,
+    SIM_RESOLUTION = 18,
+    DYE_RESOLUTION = 270,
+    CAPTURE_RESOLUTION = 96,
     DENSITY_DISSIPATION = 3.5,
     VELOCITY_DISSIPATION = 2,
     PRESSURE = 0.1,
     PRESSURE_ITERATIONS = 20,
     CURL = 3,
     SPLAT_RADIUS = 0.05,
-    SPLAT_FORCE = 1500,
+    SPLAT_FORCE = 1125,
     SHADING = true,
     COLOR_UPDATE_SPEED = 10,
     BACK_COLOR = { r: 0.5, g: 0, b: 0 },
