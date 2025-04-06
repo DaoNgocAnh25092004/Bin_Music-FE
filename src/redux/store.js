@@ -6,6 +6,7 @@ import bannerSlice from './slices/bannerSlice';
 import userReducer from './slices/userSlice';
 import playerReducer from './slices/playerSlice';
 import volumeReducer from './slices/volumeSlice';
+import lyricReducer from './slices/lyricSlice';
 
 // Cấu hình persist riêng cho playerReducer
 const playerPersistConfig = {
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
     user: userReducer,
     banner: bannerSlice,
     volume: volumeReducer,
+    lyric: lyricReducer,
     player: persistReducer(playerPersistConfig, playerReducer),
 });
 

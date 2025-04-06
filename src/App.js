@@ -14,9 +14,12 @@ import { publicRoutes, protectedRoutes } from '~/routes';
 import DefaultLayout from '~/Layouts';
 import Login from './components/Login';
 import SplashCursor from '~/components/SplashCursor';
+import Lyric from './Layouts/Components/Control/Components/Lyric';
 
 function App() {
     const [isModalOpen, setModalOpen] = useState(false);
+    const isOpenLyric = useSelector((state) => state.lyric.isOpen);
+    console.log('🚀 ~ App ~ isOpenLyric:', isOpenLyric);
 
     // Function to check if user is logged in
     // If not, redirect to Home page
@@ -62,10 +65,16 @@ function App() {
     return (
         <Router>
             <div className="App">
+                {/* Cursor */}
                 <SplashCursor />
 
+                {/* Toast notification */}
                 <ToastContainer />
 
+                {/* Lyric */}
+                {isOpenLyric && <Lyric />}
+
+                {/* Modal login */}
                 <Login isOpen={isModalOpen} setIsOpen={setModalOpen} />
 
                 <Routes>
