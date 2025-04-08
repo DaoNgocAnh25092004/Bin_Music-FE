@@ -7,6 +7,7 @@ import userReducer from './slices/userSlice';
 import playerReducer from './slices/playerSlice';
 import volumeReducer from './slices/volumeSlice';
 import lyricReducer from './slices/lyricSlice';
+import playlistReducer from './slices/playlistSlice';
 
 // Cấu hình persist riêng cho playerReducer
 const playerPersistConfig = {
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
     banner: bannerSlice,
     volume: volumeReducer,
     lyric: lyricReducer,
+    playlist: playlistReducer,
     player: persistReducer(playerPersistConfig, playerReducer),
 });
 

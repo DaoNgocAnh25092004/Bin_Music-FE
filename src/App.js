@@ -15,11 +15,12 @@ import DefaultLayout from '~/Layouts';
 import Login from './components/Login';
 import SplashCursor from '~/components/SplashCursor';
 import Lyric from './Layouts/Components/Control/Components/Lyric';
+import Playlist from './Layouts/Components/Control/Components/Playlist';
 
 function App() {
     const [isModalOpen, setModalOpen] = useState(false);
     const isOpenLyric = useSelector((state) => state.lyric.isOpen);
-    console.log('🚀 ~ App ~ isOpenLyric:', isOpenLyric);
+    const isOpenPlaylist = useSelector((state) => state.playlist.isOpen);
 
     // Function to check if user is logged in
     // If not, redirect to Home page
@@ -73,6 +74,9 @@ function App() {
 
                 {/* Lyric */}
                 {isOpenLyric && <Lyric />}
+
+                {/* Playlist */}
+                {isOpenPlaylist && <Playlist />}
 
                 {/* Modal login */}
                 <Login isOpen={isModalOpen} setIsOpen={setModalOpen} />
