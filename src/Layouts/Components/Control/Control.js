@@ -17,14 +17,20 @@ import VolumeSlider from './Components/VolumeSlider/VolumeSlider';
 import { setVolume } from '~/redux/slices/volumeSlice';
 import { openLyric } from '~/redux/slices/lyricSlice';
 import CentralControl from './Components/CentralControl';
+import {
+    finishHiding,
+    hidePlayList,
+    showPlayList,
+} from '~/redux/slices/playlistSlice';
 
 const cx = classNames.bind(styles);
 
 function Control() {
     const { currentSong } = useSelector((state) => state.player, shallowEqual);
     const { volume } = useSelector((state) => state.volume, shallowEqual);
-    const [openMiniPlayer, setOpenMiniPlayer] = useState(false);
     const [valueVolume, setValueVolume] = useState(volume);
+    const { isOpen } = useSelector((state) => state.playlist);
+
     const audioRef = useRef(null);
     const dispatch = useDispatch();
 
@@ -50,6 +56,17 @@ function Control() {
             audioRef.current.volume = valueVolume / 100;
         }
     }, [valueVolume]);
+
+    const handleShowPlaylist = () => {
+        if (isOpen) {
+            dispatch(hidePlayList());
+            setTimeout(() => {
+                dispatch(finishHiding());
+            }, 500);
+        } else {
+            dispatch(showPlayList());
+        }
+    };
 
     return (
         <div className={cx('container')}>
@@ -100,7 +117,7 @@ function Control() {
                     </div>
                 </div>
 
-                <div>
+                <div onClick={handleShowPlaylist}>
                     <FontAwesomeIcon icon={faRectangleList} />
                 </div>
             </div>

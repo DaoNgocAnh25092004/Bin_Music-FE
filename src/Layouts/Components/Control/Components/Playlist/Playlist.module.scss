@@ -1,0 +1,42 @@
+.container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: calc(100vh - var(--control-height) - var(--spacing-layout));
+    width: 350px;
+    background-color: var(--popper-background-color);
+    z-index: 11;
+    animation: slide-up 0.5s ease-out forwards;
+
+    &.hide {
+        animation: slide-down 0.5s ease-in forwards;
+    }
+}
+
+@keyframes slide-up {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-down {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+.title {
+    color: var(--white-color);
+    margin: 10px 0 0 20px;
+    font-size: 18px;
+}
+
+.song-current {
+    margin: 20px 4px 0 0;
+}
