@@ -11,7 +11,6 @@ import {
     faMicrophoneLines,
     faRectangleList,
     faVolumeHigh,
-    faWindowRestore,
 } from '@fortawesome/free-solid-svg-icons';
 import VolumeSlider from './Components/VolumeSlider/VolumeSlider';
 import { setVolume } from '~/redux/slices/volumeSlice';
@@ -117,7 +116,10 @@ function Control() {
                     </div>
                 </div>
 
-                <div onClick={handleShowPlaylist}>
+                <div
+                    className={cx({ 'playlist-active': isOpen })}
+                    onClick={handleShowPlaylist}
+                >
                     <FontAwesomeIcon icon={faRectangleList} />
                 </div>
             </div>
