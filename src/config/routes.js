@@ -8,6 +8,7 @@ const routes = {
     topicAndCategory: '/topic-and-category',
     top100: '/top-100',
     page404: '*',
+    createNewPlaylist: '/create-new-playlist',
 
     // Page: id
     albumDetail: '/album/:albumId',
