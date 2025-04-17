@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import styles from './DefaultSidebar.module.scss';
@@ -25,6 +25,7 @@ const cx = classNames.bind(styles);
 function DefaultSidebar() {
     const [isModalOpen, setModalOpen] = useState(false);
     const checkLogin = useSelector((state) => state.user.isLogin);
+    const navigate = useNavigate();
 
     return (
         <>
@@ -96,7 +97,12 @@ function DefaultSidebar() {
 
                 {/* Create Playlist */}
                 {checkLogin && (
-                    <div className={cx('create-playlist')}>
+                    <div
+                        className={cx('create-playlist')}
+                        onClick={() =>
+                            navigate(config.routes.createNewPlaylist)
+                        }
+                    >
                         <FontAwesomeIcon icon={faPlus} />
                         <p>Tạo Playlist mới</p>
                     </div>

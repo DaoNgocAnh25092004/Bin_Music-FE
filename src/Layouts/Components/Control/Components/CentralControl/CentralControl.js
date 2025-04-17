@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import {
     nextSong,
@@ -61,7 +61,7 @@ function CentralControl({ audioRef }) {
         }, 500);
 
         return () => clearInterval(interval);
-    }, [dispatch, isPlaying]);
+    }, [dispatch, audioRef]);
 
     // Check music is playing
     useEffect(

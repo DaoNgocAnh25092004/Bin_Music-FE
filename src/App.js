@@ -67,7 +67,7 @@ function App() {
         <Router>
             <div className="App">
                 {/* Cursor */}
-                <SplashCursor />
+                {/* <SplashCursor /> */}
 
                 {/* Toast notification */}
                 <ToastContainer />

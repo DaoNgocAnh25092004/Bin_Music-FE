@@ -14,6 +14,7 @@ import RatingNewMusic from '~/pages/RatingNewMusic';
 import TopicAndCategory from '~/pages/TopicAndCategory';
 import Top100 from '~/pages/Top100';
 import Page404 from '~/pages/Page404';
+import CreatePlaylist from '~/pages/CreatePlaylist';
 
 // Page: id
 import AlbumDetail from '~/pages/AlbumDetail';
@@ -109,6 +110,11 @@ const protectedRoutes = {
         {
             path: config.routes.library,
             component: Library,
+        },
+
+        {
+            path: config.routes.createNewPlaylist,
+            component: CreatePlaylist,
         },
     ],
 };

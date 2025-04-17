@@ -1,7 +1,6 @@
 import classNames from 'classnames/bind';
 import ListMusic, { Music } from '~/components/ListMusic';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
 
 import styles from './Playlist.module.scss';
 import {
