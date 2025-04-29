@@ -168,6 +168,9 @@ function Explore() {
                         key={music._id}
                         music={music}
                         handlePlaySong={handlePlaySong}
+                        isLyric
+                        isHeart
+                        isMore
                     />
                 ))}
             </ListMusic>

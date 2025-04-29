@@ -1,6 +1,9 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState, useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
+import PropTypes from 'prop-types';
 
 import styles from './ListMusic.module.scss';
 import Image from '~/components/Image';
@@ -9,13 +12,21 @@ import {
     faEllipsis,
     faMicrophone,
     faPlay,
+    faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import images from '~/assets/images';
 
 const cx = classNames.bind(styles);
 
-function Music({ music, handlePlaySong }) {
+function Music({
+    music,
+    handlePlaySong,
+    isLyric,
+    isHeart,
+    handleAddPlaylist,
+    isMore,
+}) {
     const [duration, setDuration] = useState('00:00');
     const { currentSong, isPlaying } = useSelector(
         (state) => state.player,
@@ -84,13 +95,87 @@ function Music({ music, handlePlaySong }) {
                 )}
 
                 <div>
-                    <FontAwesomeIcon icon={faMicrophone} />
-                    <FontAwesomeIcon icon={faHeart} />
-                    <FontAwesomeIcon icon={faEllipsis} />
+                    {isLyric && (
+                        <Tippy
+                            content={'Lời bài hát'}
+                            placement="top"
+                            hideOnClick={false}
+                        >
+                            <div
+                                className={cx('icon')}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faMicrophone} />
+                            </div>
+                        </Tippy>
+                    )}
+
+                    {isHeart && (
+                        <Tippy
+                            content={'Thêm vào bài hát yêu thích'}
+                            placement="top"
+                            hideOnClick={false}
+                        >
+                            <div
+                                className={cx('icon')}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faHeart} />
+                            </div>
+                        </Tippy>
+                    )}
+
+                    {isMore && (
+                        <Tippy
+                            content={'Tiện ích khác'}
+                            placement="top"
+                            hideOnClick={false}
+                        >
+                            <div
+                                className={cx('icon')}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faEllipsis} />
+                            </div>
+                        </Tippy>
+                    )}
+
+                    {handleAddPlaylist && (
+                        <Tippy
+                            content={'Thêm vào playlist'}
+                            placement="top"
+                            hideOnClick={false}
+                        >
+                            <div
+                                className={cx('icon')}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleAddPlaylist();
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPlus} />
+                            </div>
+                        </Tippy>
+                    )}
                 </div>
             </div>
         </div>
     );
 }
+
+Music.propTypes = {
+    music: PropTypes.object.isRequired,
+    handlePlaySong: PropTypes.func.isRequired,
+    handleAddPlaylist: PropTypes.func,
+    isLyric: PropTypes.bool,
+    isHeart: PropTypes.bool,
+    isMore: PropTypes.bool,
+};
 
 export default Music;

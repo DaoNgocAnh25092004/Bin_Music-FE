@@ -99,9 +99,7 @@ function DefaultSidebar() {
                 {checkLogin && (
                     <div
                         className={cx('create-playlist')}
-                        onClick={() =>
-                            navigate(config.routes.createNewPlaylist)
-                        }
+                        onClick={() => navigate(config.routes.createPlaylist)}
                     >
                         <FontAwesomeIcon icon={faPlus} />
                         <p>Tạo Playlist mới</p>

@@ -157,7 +157,6 @@
 
     > div {
         display: flex;
-        gap: 25px;
     }
 }
 
@@ -219,4 +218,18 @@
     top: 50%;
     transform: translateY(-50%);
     font-size: 13px;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 100rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+        background: var(--gray-medium-color);
+    }
 }

@@ -8,7 +8,6 @@ import {
     setPlayList,
     updateCurrentTime,
 } from '~/redux/slices/playerSlice';
-import AOS from 'aos';
 
 import styles from './ALbumDetail.module.scss';
 import * as AlbumService from '~/Services/AlbumService';
@@ -30,31 +29,10 @@ function AlbumDetail() {
 
     useEffect(
         () => {
-            AOS.init({
-                duration: 1000,
-                once: true,
-            });
-
             const fetchData = async () => {
                 const { album } = await AlbumService.GetAlbumById({ albumId });
 
                 setAlbum(album);
-
-                // Save playlist
-                if (album.songs?.length > 0) {
-                    // Check if the song is in the playlist
-                    const isCurrentSongInAlbum = album.songs.some(
-                        (song) => song._id === currentSong?._id,
-                    );
-
-                    // If the song is not in the playlist and album new different from the current album
-                    if (
-                        !isCurrentSongInAlbum ||
-                        JSON.stringify(album.songs) !== JSON.stringify(playlist)
-                    ) {
-                        dispatch(setPlayList(album.songs));
-                    }
-                }
             };
 
             fetchData();
@@ -65,6 +43,11 @@ function AlbumDetail() {
 
     const handlePlaySong = (music) => {
         if (currentSong?._id !== music._id) {
+            // Add new playlist
+            if (JSON.stringify(playlist) !== JSON.stringify(album.songs)) {
+                dispatch(setPlayList(album.songs));
+            }
+
             // Current song
             dispatch(setCurrentSong(music));
 
@@ -112,6 +95,9 @@ function AlbumDetail() {
                             key={music._id}
                             music={music}
                             handlePlaySong={handlePlaySong}
+                            isLyric
+                            isHeart
+                            isMore
                         />
                     ))}
                 </ListMusic>
