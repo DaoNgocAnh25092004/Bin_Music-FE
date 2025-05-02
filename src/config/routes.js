@@ -8,7 +8,11 @@ const routes = {
     topicAndCategory: '/topic-and-category',
     top100: '/top-100',
     page404: '*',
-    createNewPlaylist: '/create-new-playlist',
+
+    // Page need login
+    createPlaylist: '/create-playlist',
+    createPlaylistAi: '/create-playlist-ai',
+    playlistDetail: '/playlist/:playlistId',
 
     // Page: id
     albumDetail: '/album/:albumId',

@@ -14,9 +14,11 @@ import RatingNewMusic from '~/pages/RatingNewMusic';
 import TopicAndCategory from '~/pages/TopicAndCategory';
 import Top100 from '~/pages/Top100';
 import Page404 from '~/pages/Page404';
-import CreatePlaylist from '~/pages/CreatePlaylist';
 
-// Page: id
+// Page login
+import CreatePlaylist from '~/pages/CreatePlaylist';
+import CreatePlaylistAi from '~/pages/CreatePlaylistAi';
+import PlaylistDetail from '~/pages/PlaylistDetail';
 import AlbumDetail from '~/pages/AlbumDetail';
 
 // Page admin
@@ -113,8 +115,18 @@ const protectedRoutes = {
         },
 
         {
-            path: config.routes.createNewPlaylist,
+            path: config.routes.createPlaylist,
             component: CreatePlaylist,
+        },
+
+        {
+            path: config.routes.createPlaylistAi,
+            component: CreatePlaylistAi,
+        },
+
+        {
+            path: config.routes.playlistDetail,
+            component: PlaylistDetail,
         },
     ],
 };

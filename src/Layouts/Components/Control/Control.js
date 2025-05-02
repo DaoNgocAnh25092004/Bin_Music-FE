@@ -68,62 +68,64 @@ function Control() {
     };
 
     return (
-        <div className={cx('container')}>
-            <div className={cx('box-left')}>
-                <div className={cx('box-left-img')}>
-                    <Image
-                        src={currentSong?.thumbnailUrl}
-                        alt={currentSong?.name}
-                    />
-                </div>
-                <div className={cx('box-left-info')}>
-                    <p>{currentSong?.name}</p>
-                    <p>
-                        {currentSong?.listArtist.map((artist, index) => (
-                            <span key={index}>
-                                {artist.name}
-                                {index < currentSong.listArtist?.length - 1
-                                    ? ', '
-                                    : ''}
-                            </span>
-                        ))}
-                    </p>
-                </div>
-                <div className={cx('box-left-control')}>
-                    <div>
-                        <FontAwesomeIcon icon={faHeart} />
-                    </div>
-                    <div>
-                        <FontAwesomeIcon icon={faEllipsis} />
-                    </div>
-                </div>
-            </div>
-
-            <CentralControl audioRef={audioRef} />
-
-            <div className={cx('box-right')}>
-                <div>
-                    <div onClick={() => dispatch(openLyric())}>
-                        <FontAwesomeIcon icon={faMicrophoneLines} />
-                    </div>
-                    <div>
-                        <FontAwesomeIcon icon={faVolumeHigh} />
-                        <VolumeSlider
-                            value={valueVolume}
-                            onChange={handleVolumeChange}
-                            percentageVolume={percentageVolume}
+        currentSong && (
+            <div className={cx('container')}>
+                <div className={cx('box-left')}>
+                    <div className={cx('box-left-img')}>
+                        <Image
+                            src={currentSong?.thumbnailUrl}
+                            alt={currentSong?.name}
                         />
                     </div>
+                    <div className={cx('box-left-info')}>
+                        <p>{currentSong?.name}</p>
+                        <p>
+                            {currentSong?.listArtist.map((artist, index) => (
+                                <span key={index}>
+                                    {artist.name}
+                                    {index < currentSong.listArtist?.length - 1
+                                        ? ', '
+                                        : ''}
+                                </span>
+                            ))}
+                        </p>
+                    </div>
+                    <div className={cx('box-left-control')}>
+                        <div>
+                            <FontAwesomeIcon icon={faHeart} />
+                        </div>
+                        <div>
+                            <FontAwesomeIcon icon={faEllipsis} />
+                        </div>
+                    </div>
                 </div>
 
-                <div
-                    className={cx({ 'playlist-active': isOpen })}
-                    onClick={handleShowPlaylist}
-                >
-                    <FontAwesomeIcon icon={faRectangleList} />
+                <CentralControl audioRef={audioRef} />
+
+                <div className={cx('box-right')}>
+                    <div>
+                        <div onClick={() => dispatch(openLyric())}>
+                            <FontAwesomeIcon icon={faMicrophoneLines} />
+                        </div>
+                        <div>
+                            <FontAwesomeIcon icon={faVolumeHigh} />
+                            <VolumeSlider
+                                value={valueVolume}
+                                onChange={handleVolumeChange}
+                                percentageVolume={percentageVolume}
+                            />
+                        </div>
+                    </div>
+
+                    <div
+                        className={cx({ 'playlist-active': isOpen })}
+                        onClick={handleShowPlaylist}
+                    >
+                        <FontAwesomeIcon icon={faRectangleList} />
+                    </div>
                 </div>
             </div>
-        </div>
+        )
     );
 }
 

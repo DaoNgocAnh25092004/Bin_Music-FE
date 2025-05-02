@@ -41,6 +41,9 @@ function Playlist() {
                             key={currentSong._id}
                             music={currentSong}
                             handlePlaySong={handlePlaySong}
+                            isLyric
+                            isHeart
+                            isMore
                         />
                     </ListMusic>
                 </div>
@@ -55,6 +58,9 @@ function Playlist() {
                             key={music._id}
                             music={music}
                             handlePlaySong={handlePlaySong}
+                            isLyric
+                            isHeart
+                            isMore
                         />
                     ))}
             </ListMusic>
