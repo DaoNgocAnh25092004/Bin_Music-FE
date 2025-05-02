@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState, useMemo } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import PropTypes from 'prop-types';
@@ -20,6 +20,7 @@ import images from '~/assets/images';
 import * as FavoriteService from '~/Services/FavoriteService';
 import { useGenericMutation } from '~/hooks/useMutationHook';
 import { toast } from 'react-toastify';
+import { openLyric } from '~/redux/slices/lyricSlice';
 
 const cx = classNames.bind(styles);
 
@@ -38,6 +39,7 @@ function Music({
         (state) => state.player,
         shallowEqual,
     );
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (favoriteSongIds.includes(music._id)) {
@@ -153,14 +155,14 @@ function Music({
                 <div>
                     {isLyric && (
                         <Tippy
-                            content={'Lời bài hát'}
+                            content={'Phát cùng lời bài hát'}
                             placement="top"
                             hideOnClick={false}
                         >
                             <div
                                 className={cx('icon')}
-                                onClick={(e) => {
-                                    e.stopPropagation();
+                                onClick={() => {
+                                    dispatch(openLyric());
                                 }}
                             >
                                 <FontAwesomeIcon icon={faMicrophone} />
