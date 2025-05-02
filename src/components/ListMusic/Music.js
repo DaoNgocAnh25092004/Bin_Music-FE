@@ -10,12 +10,16 @@ import Image from '~/components/Image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faEllipsis,
+    faHeart as faHeartSolid,
     faMicrophone,
     faPlay,
     faPlus,
 } from '@fortawesome/free-solid-svg-icons';
-import { faHeart } from '@fortawesome/free-regular-svg-icons';
+import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import images from '~/assets/images';
+import * as FavoriteService from '~/Services/FavoriteService';
+import { useGenericMutation } from '~/hooks/useMutationHook';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -26,16 +30,39 @@ function Music({
     isHeart,
     handleAddPlaylist,
     isMore,
+    favoriteSongIds = [],
 }) {
     const [duration, setDuration] = useState('00:00');
+    const [isAddHeart, setIsAddHeart] = useState(false);
     const { currentSong, isPlaying } = useSelector(
         (state) => state.player,
         shallowEqual,
     );
+
+    useEffect(() => {
+        if (favoriteSongIds.includes(music._id)) {
+            setIsAddHeart(true);
+        } else {
+            setIsAddHeart(false);
+        }
+    }, [favoriteSongIds, music._id]);
+
     const checkPlaying = useMemo(
         () => currentSong?._id === music._id && isPlaying,
         [currentSong, isPlaying, music],
     );
+
+    // Mutation to add song to favorites
+    const mutationAddSongToFavorites = useGenericMutation((data) =>
+        FavoriteService.AddFavorite(data),
+    );
+
+    // Mutation to remove song from favorites
+    const mutationRemoveSongFromFavorites = useGenericMutation((data) =>
+        FavoriteService.RemoveFavorite(data),
+    );
+
+    const { id } = useSelector((state) => state.user);
 
     useEffect(() => {
         if (music.audioUrl) {
@@ -55,6 +82,35 @@ function Music({
             };
         }
     }, [music.audioUrl]);
+
+    const handleHeart = async (musicId) => {
+        const formData = {
+            userId: id,
+            songId: musicId,
+        };
+
+        if (isAddHeart) {
+            mutationRemoveSongFromFavorites.mutate(formData, {
+                onSuccess: () => {
+                    setIsAddHeart(false);
+                    toast.success('Đã xoá khỏi danh sách yêu thích!');
+                },
+                onError: (error) => {
+                    console.error('Error removing song from favorites:', error);
+                },
+            });
+        } else {
+            mutationAddSongToFavorites.mutate(formData, {
+                onSuccess: () => {
+                    setIsAddHeart(true);
+                    toast.success('Thêm vào danh sách yêu thích thành công!');
+                },
+                onError: (error) => {
+                    console.error('Error adding song to favorites:', error);
+                },
+            });
+        }
+    };
 
     return (
         <div
@@ -114,7 +170,7 @@ function Music({
 
                     {isHeart && (
                         <Tippy
-                            content={'Thêm vào bài hát yêu thích'}
+                            content={isAddHeart ? 'Bỏ thích' : 'Thích'}
                             placement="top"
                             hideOnClick={false}
                         >
@@ -122,9 +178,17 @@ function Music({
                                 className={cx('icon')}
                                 onClick={(e) => {
                                     e.stopPropagation();
+                                    handleHeart(music._id);
                                 }}
                             >
-                                <FontAwesomeIcon icon={faHeart} />
+                                <FontAwesomeIcon
+                                    icon={
+                                        isAddHeart
+                                            ? faHeartSolid
+                                            : faHeartRegular
+                                    }
+                                    className={cx({ liked: isAddHeart })}
+                                />
                             </div>
                         </Tippy>
                     )}
@@ -176,6 +240,7 @@ Music.propTypes = {
     isLyric: PropTypes.bool,
     isHeart: PropTypes.bool,
     isMore: PropTypes.bool,
+    favoriteSongIds: PropTypes.array,
 };
 
 export default Music;

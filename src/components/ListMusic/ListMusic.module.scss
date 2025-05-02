@@ -38,13 +38,13 @@
         .box-info {
             > div {
                 p {
-                    width: 120px;
+                    width: 160px;
                     transition: all 0.1s linear;
                 }
             }
 
             > p {
-                width: 190px;
+                width: 160px;
                 transition: all 0.1s linear;
             }
         }
@@ -232,4 +232,8 @@
     &:hover {
         background: var(--gray-medium-color);
     }
+}
+
+.liked {
+    color: var(--red-color);
 }
