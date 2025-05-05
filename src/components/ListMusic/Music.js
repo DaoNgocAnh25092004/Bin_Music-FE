@@ -21,6 +21,7 @@ import * as FavoriteService from '~/Services/FavoriteService';
 import { useGenericMutation } from '~/hooks/useMutationHook';
 import { toast } from 'react-toastify';
 import { openLyric } from '~/redux/slices/lyricSlice';
+import { useNavigate } from 'react-router';
 
 const cx = classNames.bind(styles);
 
@@ -40,6 +41,7 @@ function Music({
         shallowEqual,
     );
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (favoriteSongIds.includes(music._id)) {
@@ -124,11 +126,18 @@ function Music({
             </div>
             <div className={cx('box-info')}>
                 <div>
-                    <p>{music.name}</p>
+                    <p
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/music/${music._id}`);
+                        }}
+                    >
+                        {music.name}
+                    </p>
                     {music.premium && <span>PREMIUM</span>}
                 </div>
                 <p>
-                    {music.listArtist.map((artist, index) => (
+                    {music.listArtist?.map((artist, index) => (
                         <span key={index}>
                             {artist.name}
                             {index < music.listArtist.length - 1 ? ', ' : ''}

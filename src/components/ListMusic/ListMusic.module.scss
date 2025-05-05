@@ -40,6 +40,10 @@
                 p {
                     width: 160px;
                     transition: all 0.1s linear;
+
+                    &:hover {
+                        color: var(--blue-light-color);
+                    }
                 }
             }
 

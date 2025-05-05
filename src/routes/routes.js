@@ -30,6 +30,7 @@ import AlbumAdminCreate from '~/pages/AlbumAdminCreate';
 import CategoryAlbumAdmin from '~/pages/CategoryAlbumAdmin';
 
 import Artist from '~/pages/Artist';
+import MusicDetail from '~/pages/MusicDetail';
 
 // Routes public
 const publicRoutes = [
@@ -66,6 +67,11 @@ const publicRoutes = [
     {
         path: config.routes.albumDetail,
         component: AlbumDetail,
+    },
+
+    {
+        path: config.routes.musicDetail,
+        component: MusicDetail,
     },
 ];
 

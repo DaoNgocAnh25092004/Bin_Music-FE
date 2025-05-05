@@ -16,6 +16,7 @@ const routes = {
 
     // Page: id
     albumDetail: '/album/:albumId',
+    musicDetail: '/music/:musicId',
 
     // Page admin
     musicAdmin: '/admin/music',
