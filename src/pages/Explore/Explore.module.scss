@@ -181,6 +181,10 @@
     color: var(--white-color);
     font-weight: bold;
     font-size: 20px;
+
+    @media screen and (max-width: 1279px) {
+        margin-top: -20px;
+    }
 }
 
 .list-partner-music {
@@ -190,6 +194,10 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     margin: 10px var(--spacing-lr-content) 0 calc(-1 * var(--spacing));
+
+    @media screen and (max-width: 1279px) {
+        --columns: 4;
+    }
 
     > div {
         background-color: var(--white-color);

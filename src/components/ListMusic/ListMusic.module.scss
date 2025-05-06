@@ -6,6 +6,11 @@
     justify-content: flex-start;
     margin: 10px var(--spacing-lr-content) var(--spacing-list-music)
         calc(-1 * var(--spacing));
+
+    @media screen and (max-width: 1279px) {
+        --columns: 2;
+        overflow: hidden;
+    }
 }
 
 .play-list {
@@ -86,6 +91,28 @@
                 width: 190px;
                 transition: all 0.1s linear;
             }
+        }
+    }
+}
+
+.box-info {
+    > div {
+        p {
+            @media screen and (max-width: 1279px) {
+                width: 130px !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+
+    p {
+        @media screen and (max-width: 1279px) {
+            width: 160px !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 }

@@ -173,7 +173,7 @@ function Header() {
             <Search />
 
             <div className={cx('tools')}>
-                <Button large primary>
+                <Button large primary className={cx('btn-upgrade')}>
                     Nâng cấp tài khoản
                 </Button>
 

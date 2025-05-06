@@ -14,6 +14,10 @@
     border: 1px solid transparent;
     z-index: 1;
 
+    @media screen and (max-width: 1279px) {
+        font-size: 12px;
+    }
+
     user-select: none;
     transition: all 0.3s ease-in-out;
 

@@ -11,6 +11,11 @@
     padding: 0 20px;
     gap: 20px;
 
+    @media screen and (max-width: 1279px) {
+        padding: 0 10px;
+        gap: 10px;
+    }
+
     > div {
         width: calc(100% / 3);
         height: 100%;
@@ -37,6 +42,9 @@
 
     .box-left-info {
         margin-left: 10px;
+        @media screen and (max-width: 1279px) {
+            margin-left: 3%;
+        }
 
         p:first-child {
             font-size: 16px;
@@ -45,6 +53,10 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+
+            @media screen and (max-width: 1279px) {
+                max-width: 100px;
+            }
         }
 
         p:last-child {
@@ -55,6 +67,10 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             cursor: pointer;
+
+            @media screen and (max-width: 1279px) {
+                max-width: 100px;
+            }
 
             &:hover {
                 color: var(--blue-light-color);
@@ -69,6 +85,10 @@
         margin-left: 30px;
         display: flex;
         gap: 10px;
+        @media screen and (max-width: 1279px) {
+            gap: 4px;
+            margin-left: 10px;
+        }
 
         > div {
             width: 30px;
@@ -95,6 +115,10 @@
         gap: 8px;
         padding-right: 13px;
         border-right: 1px solid var(--gray-medium-color);
+
+        @media screen and (max-width: 1279px) {
+            gap: 4px;
+        }
 
         > div:not(:last-child) {
             display: flex;
