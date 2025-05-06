@@ -8,7 +8,7 @@ import styles from './Library.module.scss';
 import * as PLaylist from '~/Services/PLaylistService';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import ListTopic, { Topic } from '../Explore/ListTopic';
+import ListTopic, { Topic } from '~/components/ListTopic';
 import ListMusic, { Music } from '~/components/ListMusic';
 import * as FavoriteService from '~/Services/FavoriteService';
 import {

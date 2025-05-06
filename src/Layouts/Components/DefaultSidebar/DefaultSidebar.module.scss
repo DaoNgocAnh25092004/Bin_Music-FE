@@ -54,3 +54,13 @@
     color: var(--gray-light-color);
     cursor: pointer;
 }
+
+@media screen and (max-width: 1279px) {
+    .logo {
+        font-size: 24px;
+    }
+
+    .create-playlist {
+        font-size: 12px;
+    }
+}

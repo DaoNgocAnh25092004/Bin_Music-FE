@@ -5,10 +5,11 @@
     right: 0;
     height: var(--header-height);
     background-color: var(--background-color);
-    padding: 0 40px;
+    padding: 0 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 20px;
     z-index: 2;
 }
 
@@ -18,7 +19,14 @@
     gap: 20px;
 }
 
-// Setting
+@media screen and (max-width: 1279px) {
+    .tools {
+        .btn-upgrade {
+            font-size: 11px;
+        }
+    }
+}
+
 .setting {
     width: 40px;
     height: 40px;
@@ -31,6 +39,7 @@
     cursor: pointer;
     flex-shrink: 0;
 }
+
 .icon-setting {
     position: absolute;
     top: 50%;
@@ -38,7 +47,6 @@
     transform: translate(-50%, -50%);
 }
 
-// User
 .user {
     width: 40px;
     height: 40px;

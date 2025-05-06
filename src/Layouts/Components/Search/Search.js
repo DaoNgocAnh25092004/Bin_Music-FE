@@ -7,7 +7,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
 
 import styles from './Search.module.scss';
@@ -27,7 +27,22 @@ function Search() {
     const debouncedSearchValue = useDebounce(keyword, 600);
     const [loading, setLoading] = useState(false);
     const [resultResearch, setResultResearch] = useState([]);
+    const searchRef = useRef(null);
+    const [boxWidth, setBoxWidth] = useState(0);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const updateWidth = () => {
+            if (searchRef.current) {
+                setBoxWidth(searchRef.current.offsetWidth);
+            }
+        };
+
+        updateWidth();
+        window.addEventListener('resize', updateWidth);
+
+        return () => window.removeEventListener('resize', updateWidth);
+    }, []);
 
     useEffect(() => {
         if (!debouncedSearchValue) {
@@ -115,7 +130,12 @@ function Search() {
     };
 
     const renderResult = (attrs) => (
-        <div className={cx('box-result')} tabIndex="-1" {...attrs}>
+        <div
+            className={cx('box-result')}
+            tabIndex="-1"
+            style={{ width: `${boxWidth + 49}px` }}
+            {...attrs}
+        >
             <PopperWrapper>
                 {loading ? (
                     <div className={cx('loading-box')}>
@@ -206,6 +226,7 @@ function Search() {
                     className={cx('input')}
                     type="text"
                     placeholder="Tìm kiếm bài hát..."
+                    ref={searchRef}
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
                     onFocus={() => setTippyVisible(true)}

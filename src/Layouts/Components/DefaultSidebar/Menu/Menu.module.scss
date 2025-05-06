@@ -29,6 +29,12 @@
     margin-top: 2px;
 }
 
+@media screen and (max-width: 1279px) {
+    .title {
+        font-size: 13px;
+    }
+}
+
 .icon > svg {
     width: 23px;
     height: 23px;

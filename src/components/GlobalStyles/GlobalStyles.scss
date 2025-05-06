@@ -38,6 +38,11 @@
     --spacing-list-music: 30px;
 
     --font-family: 'ProximaNova', sans-serif;
+
+    @media screen and (max-width: 1279px) {
+        --sidebar-width: 150px;
+        --spacing-lr-content: 20px;
+    }
 }
 
 * {

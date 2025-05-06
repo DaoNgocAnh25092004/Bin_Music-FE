@@ -122,7 +122,7 @@ function Music({
             onClick={() => handlePlaySong(music)}
         >
             <div className={cx('box-img')}>
-                <Image src={music.thumbnailUrl} alt={music.name} />
+                <Image src={music.thumbnailUrl} alt={music.name || 'Image'} />
             </div>
             <div className={cx('box-info')}>
                 <div>

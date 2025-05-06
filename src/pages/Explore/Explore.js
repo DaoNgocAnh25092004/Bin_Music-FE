@@ -8,7 +8,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import Styles from './Explore.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faRefresh } from '@fortawesome/free-solid-svg-icons';
-import ListTopic, { Topic } from './ListTopic';
+import ListTopic, { Topic } from '../../components/ListTopic';
 // import Chart from './Chart';
 import Image from '~/components/Image';
 import images from '~/assets/images';
@@ -28,11 +28,32 @@ function Explore() {
     // const [activeButton, setActiveButton] = useState('Tất Cả');
     const [albumsByCategory, setAlbumsByCategory] = useState([]);
     const [suggestedSongs, setSuggestedSongs] = useState([]);
+    const [sliceCountAlbum, setSliceCountAlbum] = useState(5);
+    const [sliceCountMusic, setSliceCountMusic] = useState(9);
+
     const dispatch = useDispatch();
     const { currentSong, currentTimeSong } = useSelector(
         (state) => state.player,
         shallowEqual,
     );
+
+    useEffect(() => {
+        const updateSliceCount = () => {
+            const width = window.innerWidth;
+            if (width >= 768 && width < 1024) {
+                setSliceCountAlbum(4);
+                setSliceCountMusic(6);
+            } else {
+                setSliceCountAlbum(5);
+                setSliceCountMusic(9);
+            }
+        };
+
+        updateSliceCount();
+        window.addEventListener('resize', updateSliceCount);
+
+        return () => window.removeEventListener('resize', updateSliceCount);
+    }, []);
 
     // Call API album by categories
     useEffect(() => {
@@ -117,7 +138,7 @@ function Explore() {
             </div>
 
             <ListTopic>
-                {albumsByCategory.Best_Of_2025?.slice(0, 5).map(
+                {albumsByCategory.Best_Of_2025?.slice(0, sliceCountAlbum).map(
                     (album, index) => (
                         <Topic
                             key={album._id}
@@ -163,7 +184,7 @@ function Explore() {
             </div>
 
             <ListMusic dataAos="fade-right">
-                {suggestedSongs.map((music) => (
+                {suggestedSongs?.slice(0, sliceCountMusic).map((music) => (
                     <Music
                         key={music._id}
                         music={music}

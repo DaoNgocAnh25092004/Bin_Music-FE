@@ -16,7 +16,7 @@
 }
 .input {
     flex: 1;
-    // margin-right: 15px;
+    width: 100%;
     font-size: 15px;
     background-color: transparent;
     color: var(--white-color);
@@ -26,6 +26,12 @@
     width: 400px;
     margin-top: 10px;
 }
+
+// @media screen and (max-width: 1279px) {
+//     .box-result {
+//         width: 335px;
+//     }
+// }
 
 .history-list {
     > li {
