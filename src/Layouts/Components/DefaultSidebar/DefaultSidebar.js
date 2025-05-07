@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 
 import styles from './DefaultSidebar.module.scss';
 import Menu, { MenuItem } from './Menu';
@@ -25,11 +25,17 @@ const cx = classNames.bind(styles);
 function DefaultSidebar() {
     const [isModalOpen, setModalOpen] = useState(false);
     const checkLogin = useSelector((state) => state.user.isLogin);
+    const { currentSong } = useSelector((state) => state.player, shallowEqual);
+
     const navigate = useNavigate();
 
     return (
         <>
-            <aside className={cx('sidebar')}>
+            <aside
+                className={cx('sidebar', {
+                    'has-player': currentSong === null,
+                })}
+            >
                 {/* Logo */}
                 <Link to={config.routes.explore}>
                     <div className={cx('logo')}>Bin Music</div>

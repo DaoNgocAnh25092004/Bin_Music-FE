@@ -23,6 +23,12 @@
     }
 }
 
+.has-player {
+    .content {
+        bottom: 0;
+    }
+}
+
 .scroll-content {
     flex: 1;
     overflow-y: auto;

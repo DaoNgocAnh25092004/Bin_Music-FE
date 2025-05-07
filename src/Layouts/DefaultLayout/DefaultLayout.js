@@ -2,6 +2,7 @@ import classNames from 'classnames/bind';
 import { memo, useEffect, useRef } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { shallowEqual, useSelector } from 'react-redux';
 
 import Header from '~/Layouts/Components/Header';
 import DefaultSidebar from '~/Layouts/Components/DefaultSidebar';
@@ -12,6 +13,7 @@ const cx = classNames.bind(styles);
 
 function DefaultLayout({ children }) {
     const scrollRef = useRef(null);
+    const { currentSong } = useSelector((state) => state.player, shallowEqual);
 
     useEffect(() => {
         AOS.init({
@@ -36,7 +38,7 @@ function DefaultLayout({ children }) {
     }, []);
 
     return (
-        <div className={cx('app')}>
+        <div className={cx('app', { 'has-player': currentSong === null })}>
             {/* Header */}
             <Header />
 
