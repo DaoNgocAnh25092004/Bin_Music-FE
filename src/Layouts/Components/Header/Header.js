@@ -2,10 +2,10 @@ import className from 'classnames/bind';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faArrowUpFromBracket,
     faBan,
     faGear,
     faRightFromBracket,
+    faStore,
 } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
@@ -29,6 +29,7 @@ function Header() {
     const [isTippyVisible, setTippyVisible] = useState(false);
     const userInfo = useSelector((state) => state.user);
     const isLogin = userInfo.isLogin;
+    const isAdmin = userInfo.role === 'admin';
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -136,15 +137,17 @@ function Header() {
                             <Button leftIcon={<FontAwesomeIcon icon={faBan} />}>
                                 Danh sách chặn
                             </Button>
-                            <Button
-                                leftIcon={
-                                    <FontAwesomeIcon
-                                        icon={faArrowUpFromBracket}
-                                    />
-                                }
-                            >
-                                Tải lên
-                            </Button>
+
+                            {isAdmin && (
+                                <Button
+                                    onClick={() => navigate('/admin/music')}
+                                    leftIcon={
+                                        <FontAwesomeIcon icon={faStore} />
+                                    }
+                                >
+                                    Trang quản trị
+                                </Button>
+                            )}
                         </div>
 
                         <div className={cx('line')}></div>

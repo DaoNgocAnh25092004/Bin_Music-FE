@@ -121,7 +121,9 @@ function Library() {
             )}
 
             <div className={cx('title')}>
-                <div className={cx('title-name')}>Bài hát yêu thích</div>
+                <div className={cx('title-name', 'title-favorite')}>
+                    Bài hát yêu thích
+                </div>
             </div>
 
             <ListMusic dataAos="fade-right">
