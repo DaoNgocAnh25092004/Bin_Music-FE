@@ -22,7 +22,7 @@ function MusicDetail() {
     const { musicId } = useParams();
     const [music, setMusic] = useState({});
     const dispatch = useDispatch();
-    const { currentSong, playlist, currentTimeSong } = useSelector(
+    const { currentSong, currentTimeSong } = useSelector(
         (state) => state.player,
         shallowEqual,
     );

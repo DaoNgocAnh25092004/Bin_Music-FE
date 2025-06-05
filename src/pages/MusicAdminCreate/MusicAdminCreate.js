@@ -313,6 +313,7 @@ function MusicAdminCreate() {
                     icon={<FontAwesomeIcon icon={faPerson} />}
                     error={errors.nameArtist}
                     value={nameArtist}
+                    cxc
                     onChange={(e) => setNameArtist(e.target.value.trimStart())}
                 />
                 <div className={cx('box-input-role')}>

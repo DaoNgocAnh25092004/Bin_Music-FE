@@ -21,6 +21,11 @@ import {
     setPlayList,
     updateCurrentTime,
 } from '~/redux/slices/playerSlice';
+import {
+    SkeletonBox,
+    SkeletonMusic,
+    SkeletonPartner,
+} from '~/components/Skeleton/Skeleton';
 
 const cx = classNames.bind(Styles);
 
@@ -30,6 +35,8 @@ function Explore() {
     const [suggestedSongs, setSuggestedSongs] = useState([]);
     const [sliceCountAlbum, setSliceCountAlbum] = useState(5);
     const [sliceCountMusic, setSliceCountMusic] = useState(9);
+    const [loadingAlbums, setLoadingAlbums] = useState(true);
+    const [loadingSuggested, setLoadingSuggested] = useState(true);
 
     const dispatch = useDispatch();
     const { currentSong, currentTimeSong } = useSelector(
@@ -58,8 +65,8 @@ function Explore() {
     // Call API album by categories
     useEffect(() => {
         const categories = ['Best Of 2025'];
-
         const fetchAlbums = async () => {
+            setLoadingAlbums(true);
             try {
                 const results = await Promise.all(
                     categories.map((category) =>
@@ -82,6 +89,8 @@ function Explore() {
                 setAlbumsByCategory(updatedAlbums);
             } catch (error) {
                 toast.error(error.message);
+            } finally {
+                setLoadingAlbums(false);
             }
         };
 
@@ -90,6 +99,7 @@ function Explore() {
 
     // Call API Suggested Songs
     const fetchSuggestedSongs = async () => {
+        setLoadingSuggested(true);
         try {
             const response = await HomeService.GetSuggestedSongs();
             if (response.success) {
@@ -99,6 +109,8 @@ function Explore() {
             }
         } catch (error) {
             toast.error('Lỗi khi tải danh sách gợi ý');
+        } finally {
+            setLoadingSuggested(false);
         }
     };
 
@@ -138,17 +150,24 @@ function Explore() {
             </div>
 
             <ListTopic>
-                {albumsByCategory.Best_Of_2025?.slice(0, sliceCountAlbum).map(
-                    (album, index) => (
-                        <Topic
-                            key={album._id}
-                            id={album._id}
-                            name={album.name}
-                            urlImageAlbum={album.urlImageAlbum}
-                            aosDelay={index * 200}
-                        />
-                    ),
-                )}
+                {loadingAlbums
+                    ? Array.from({ length: sliceCountAlbum - 1 }).map(
+                          (_, i) => (
+                              <SkeletonBox key={i} className="skeleton-topic" />
+                          ),
+                      )
+                    : albumsByCategory.Best_Of_2025?.slice(
+                          0,
+                          sliceCountAlbum,
+                      ).map((album, index) => (
+                          <Topic
+                              key={album._id}
+                              id={album._id}
+                              name={album.name}
+                              urlImageAlbum={album.urlImageAlbum}
+                              aosDelay={index * 200}
+                          />
+                      ))}
             </ListTopic>
 
             {/* <div className={cx('title')}>
@@ -184,16 +203,22 @@ function Explore() {
             </div>
 
             <ListMusic dataAos="fade-right">
-                {suggestedSongs?.slice(0, sliceCountMusic).map((music) => (
-                    <Music
-                        key={music._id}
-                        music={music}
-                        handlePlaySong={handlePlaySong}
-                        isLyric
-                        isHeart
-                        isMore
-                    />
-                ))}
+                {loadingSuggested
+                    ? Array.from({ length: sliceCountMusic }).map((_, i) => (
+                          <SkeletonMusic key={i} />
+                      ))
+                    : suggestedSongs
+                          ?.slice(0, sliceCountMusic)
+                          .map((music) => (
+                              <Music
+                                  key={music._id}
+                                  music={music}
+                                  handlePlaySong={handlePlaySong}
+                                  isLyric
+                                  isHeart
+                                  isMore
+                              />
+                          ))}
             </ListMusic>
 
             {/*
@@ -345,86 +370,34 @@ function Explore() {
             <div className={cx('partner-music')}>Đối Tác Âm Nhạc</div>
 
             <div className={cx('list-partner-music')} data-aos="fade-right">
-                <div className={cx('box-partner-music')}>
-                    <div>
-                        <Image src={images.partner1} alt="image" />
-                    </div>
-                </div>
-                <div className={cx('box-partner-music')}>
-                    <div>
-                        <Image src={images.partner2} alt="image" />
-                    </div>
-                </div>
-                <div className={cx('box-partner-music')}>
-                    <div>
-                        <Image src={images.partner3} alt="image" />
-                    </div>
-                </div>
-                <div className={cx('box-partner-music')}>
-                    <div>
-                        <Image src={images.partner4} alt="image" />
-                    </div>
-                </div>
-                <div className={cx('box-partner-music')}>
-                    <div>
-                        <Image src={images.partner5} alt="image" />
-                    </div>
-                </div>
-                <div className={cx('box-partner-music')}>
-                    <div>
-                        <Image src={images.partner6} alt="image" />
-                    </div>
-                </div>
-                <div className={cx('box-partner-music')}>
-                    <div>
-                        <Image src={images.partner7} alt="image" />
-                    </div>
-                </div>
-                <div className={cx('box-partner-music')}>
-                    <div>
-                        <Image src={images.partner8} alt="image" />
-                    </div>
-                </div>
-                <div className={cx('box-partner-music')}>
-                    <div>
-                        <Image src={images.partner9} alt="image" />
-                    </div>
-                </div>
-                <div className={cx('box-partner-music')}>
-                    <div>
-                        <Image src={images.partner10} alt="image" />
-                    </div>
-                </div>
-                <div className={cx('box-partner-music')}>
-                    <div>
-                        <Image src={images.partner11} alt="image" />
-                    </div>
-                </div>
-                <div className={cx('box-partner-music')}>
-                    <div>
-                        <Image src={images.partner12} alt="image" />
-                    </div>
-                </div>
-                <div className={cx('box-partner-music')}>
-                    <div>
-                        <Image src={images.partner13} alt="image" />
-                    </div>
-                </div>
-                <div className={cx('box-partner-music')}>
-                    <div>
-                        <Image src={images.partner14} alt="image" />
-                    </div>
-                </div>
-                <div className={cx('box-partner-music')}>
-                    <div>
-                        <Image src={images.partner15} alt="image" />
-                    </div>
-                </div>
-                <div className={cx('box-partner-music')}>
-                    <div>
-                        <Image src={images.partner16} alt="image" />
-                    </div>
-                </div>
+                {loadingAlbums
+                    ? Array.from({ length: 16 }).map((_, i) => (
+                          <SkeletonPartner key={i} />
+                      ))
+                    : [
+                          images.partner1,
+                          images.partner2,
+                          images.partner3,
+                          images.partner4,
+                          images.partner5,
+                          images.partner6,
+                          images.partner7,
+                          images.partner8,
+                          images.partner9,
+                          images.partner10,
+                          images.partner11,
+                          images.partner12,
+                          images.partner13,
+                          images.partner14,
+                          images.partner15,
+                          images.partner16,
+                      ].map((img, i) => (
+                          <div className={cx('box-partner-music')} key={i}>
+                              <div>
+                                  <Image src={img} alt="image" />
+                              </div>
+                          </div>
+                      ))}
             </div>
         </div>
     );

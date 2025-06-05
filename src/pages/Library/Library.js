@@ -17,12 +17,14 @@ import {
     setPlayList,
     updateCurrentTime,
 } from '~/redux/slices/playerSlice';
+import { SkeletonBox } from '~/components/Skeleton/Skeleton';
 
 const cx = classNames.bind(styles);
 
 function Library() {
     const [playlists, setPlaylists] = useState([]);
     const [listMusicHeart, setListMusicHeart] = useState([]);
+    const [loadingPlaylists, setLoadingPlaylists] = useState(true);
     const { id: userId } = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const { currentSong, currentTimeSong } = useSelector(
@@ -34,12 +36,15 @@ function Library() {
 
     // Get playlist for user
     useEffect(() => {
+        setLoadingPlaylists(true);
         const fetchPlaylists = async () => {
             try {
                 const response = await PLaylist.getAllPlaylist();
                 setPlaylists(response.playlists);
             } catch (error) {
                 toast.error('Lỗi khi tải danh sách playlist');
+            } finally {
+                setLoadingPlaylists(false);
             }
         };
         fetchPlaylists();
@@ -97,17 +102,15 @@ function Library() {
                 </div>
             </div>
 
-            {playlists.length === 0 ? (
-                <div className={cx('box-empty')}>
-                    <FontAwesomeIcon
-                        icon={faPlus}
-                        onClick={() => navigate('/create-playlist')}
-                    />
-                    <h4>Hãy tạo playlist cho riêng bạn</h4>
-                </div>
-            ) : (
+            {loadingPlaylists ? (
                 <ListTopic>
-                    {playlists?.slice(0, 5).map((album, index) => (
+                    {Array.from({ length: 5 }).map((_, i) => (
+                        <SkeletonBox key={i} className="skeleton-topic" />
+                    ))}
+                </ListTopic>
+            ) : playlists.length !== 0 ? (
+                <ListTopic>
+                    {playlists.slice(0, 5).map((album, index) => (
                         <Topic
                             key={album._id}
                             isPlaylist={true}
@@ -118,6 +121,14 @@ function Library() {
                         />
                     ))}
                 </ListTopic>
+            ) : (
+                <div className={cx('box-empty')}>
+                    <FontAwesomeIcon
+                        icon={faPlus}
+                        onClick={() => navigate('/create-playlist')}
+                    />
+                    <h4>Hãy tạo playlist cho riêng bạn</h4>
+                </div>
             )}
 
             <div className={cx('title')}>
